@@ -54,18 +54,34 @@ function shuffle(array) {
 // Call the shuffle function upon the array of cards and store the value
 function shuffleCards() {
   let shuffledCards = shuffle(cards);
-
+  
   // Reset the deck
   deck.innerHTML = "";
 
   shuffledCards.forEach(function (val) {
     deck.innerHTML += `
       <li class="card">
-        <img src="${val}" class="card-image" style="display: none;">
+        <div class="card-inner">
+          <div class="card-front"></div>
+          <div class="card-back">
+            <img src="${val}" class="card-image">
+          </div>
+        </div>
       </li>
     `;
   });
+
+  // Show all cards with flip animation
+  let allCards = document.querySelectorAll(".card");
+  allCards.forEach(card => card.classList.add("flip"));
+
+  // After 3 seconds, flip them back
+  setTimeout(function () {
+    allCards.forEach(card => card.classList.remove("flip"));
+  }, 5000);
 }
+
+
 
 /*** GAMEPLAY function ***/
 // If clicked target <=1 and contains class 'card', start timer and add class 'show', 'open'
@@ -73,8 +89,10 @@ function shuffleCards() {
 // On click, trigger moveCount(), starRating() and gameWin()
 // Set timeout to close non-matched cards
 deck.addEventListener("click", function deckClickHandler(e) {
+  let clickedCard = e.target.closest(".card"); // Ensure the card element is selected
+
   // Start the timer when the first card is clicked
-  if (e.target.classList.contains("card") && !interval) {
+  if (clickedCard && !interval) {
     interval = setInterval(function () {
       timer();
     }, 1000);
@@ -82,31 +100,26 @@ deck.addEventListener("click", function deckClickHandler(e) {
 
   // If the clicked element is a card and it's not already open or matched
   if (
-    e.target.classList.contains("card") &&
-    openCards.length <= 1 &&
-    !e.target.classList.contains("open") &&
-    !e.target.classList.contains("match")
+    clickedCard &&
+    openCards.length < 2 &&
+    !clickedCard.classList.contains("open") &&
+    !clickedCard.classList.contains("match")
   ) {
-    openCards.push(e.target);
+    openCards.push(clickedCard);
+    clickedCard.classList.add("flip", "open"); // Flip the card
   }
 
-  // Flip the card by showing its image
-  openCards.forEach(function (currentVal) {
-    currentVal.classList.add("show"); // Make the card image visible
-    currentVal.classList.add("open");
-    currentVal.children[0].style.display = "block"; // Ensure image is displayed
-  });
-
   // Once two cards are open, check for a match
-  if (openCards.length == 2) {
+  if (openCards.length === 2) {
+    let card1 = openCards[0];
+    let card2 = openCards[1];
+
     // Compare the src of the images inside both cards to check for a match
-    if (openCards[0].children[0].src === openCards[1].children[0].src) {
+    if (card1.querySelector("img").src === card2.querySelector("img").src) {
       // If the cards match, add the match class
-      matchedCards.push(openCards[0]);
-      matchedCards.push(openCards[1]);
+      matchedCards.push(card1, card2);
       matchedCards.forEach(function (currentVal) {
         currentVal.classList.add("match");
-        currentVal.children[0].style.display = "block"; // Ensure the image remains visible for matched cards
       });
     }
 
@@ -115,22 +128,18 @@ deck.addEventListener("click", function deckClickHandler(e) {
     starRating();
     gameWin();
 
-    const oldCards = openCards;
+    // Flip the cards back if they do not match
     setTimeout(function () {
-      oldCards.forEach(function (currentVal) {
+      openCards.forEach(function (currentVal) {
         if (!currentVal.classList.contains("match")) {
-          // If the card is not matched, hide its image
-          currentVal.classList.remove("open");
-          currentVal.classList.remove("show");
-          currentVal.children[0].style.display = "none"; // Hide image again if not matched
+          currentVal.classList.remove("flip", "open");
         }
       });
-    }, 400);
-
-    // Empty openCards array after the timeout
-    openCards = [];
+      openCards = []; // Reset openCards array
+    }, 800); // Delay before flipping back
   }
 });
+
 
 shuffleCards();
 
