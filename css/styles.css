@@ -117,46 +117,47 @@ h1 {
 /*** DECK|CARDS ***/
 
 .deck {
-    width: 260px;
-    min-height: 280px;
-    padding: 0 32px 24px 32px;
-    border-radius: 10px;
-    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+    width: 90%;
+    min-height: 800px;
+    padding: 0 48px 32px 48px;
+    border-radius: 15px;
+    box-shadow: 15px 20px 30px 0 rgba(46, 61, 73, 0.5);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin: 0 0 1.5em;
+    margin: 0 0 2em;
+    margin-top: 25px;
 }
 
 .deck .card {
-    height: 40px;
-    width: 40px;
+    height: 180px;
+    width: 400px;
     font-size: 0;
     color: #ffffff;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    box-shadow: 8px 4px 25px 0 rgba(46, 61, 73, 0.5);
     background: url(../background/download\ \(3\).jfif) no-repeat center center;
+    background-color: rgba(0, 0, 0, 0);
+    background-size: auto;
     background-size: cover;
     background-color: #131313;
 }
 
 .card img {
-    height: 100%;
+    height:100%;
     width: 100%;
-    object-fit: cover;
-    border-radius: 8px;  /* Optional: To match the border radius of the card */
+    border-radius: 12px;  /* Optional: To match the border radius of the card */
 }
 
 /*** GRID SYSTEM ***/
 
 .grid {
     margin: 0 auto;
-    max-width: 596px;
     width: 100%;
 }
 
@@ -185,15 +186,15 @@ h1 {
 
 .score-panel {
     text-align: left;
-    width: 260px;
+    width: 300px; /* Increase width of score panel */
 }
 
 .score-panel .stars {
     padding: 0;
-    display: inline-block;
     margin: 0 5px 0 0;
-    font-size: 10px;
+    font-size: 12px; /* Slightly larger font */
     overflow: visible;
+    font-weight: bolder;
 }
 
 .score-panel .stars li {
@@ -212,9 +213,12 @@ h1 {
 }
 
 .score-panel-subtitles {
-    font-size: 16px;
+    font-size: 25px;
+    font-weight: bolder; /* Increase font size for better readability */
     padding-right: 10px;
+    color: #EE7752;
 }
+
 
 /*** MODAL ***/
 
@@ -226,7 +230,27 @@ h1 {
     color: black;
     position: fixed;
     opacity: 0;
-    background-color: #23A6D5;
+    background-color: aliceblue;
+}
+
+.modal-position {
+    top: 40%;
+    left: 50%;
+    transform: translate(-180%, -50%);
+}
+
+/* Modal animation */
+
+
+#modal {
+    width: 350px; /* Increase modal width */
+    border: 12px solid black; /* Make border thicker */
+    border-radius: 30px; /* Increase border radius */
+    padding: 20px 30px; /* Increase padding */
+    color: black;
+    position: fixed;
+    opacity: 0;
+    background-color: aliceblue;
 }
 
 .modal-position {
@@ -266,7 +290,7 @@ h1 {
     margin: auto;
     border-radius: 30px;
     text-align: center;
-    font-size: 20px;
+    font-size: 24px; /* Increase font size */
     animation: glow 3s infinite;
 }
 
@@ -286,16 +310,16 @@ p {
 .playAgain {
     box-shadow: 8px 5px 10px 1px rgba(46, 61, 73);
     border-radius: 20px;
-    padding: 10px;
-    padding-right: 20px;
-    padding-left: 20px;
+    padding: 12px;
+    padding-right: 24px;
+    padding-left: 24px;
     font-family: 'Righteous', cursive;
-    font-size: 20px;
+    font-size: 22px;
     color: #060bff;
 }
 
 #modal .stars {
     list-style: none;
     display: inline-flex;
-    color: #060bff;
+    color: #d1ff06bb;
 }
