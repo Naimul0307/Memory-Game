@@ -226,6 +226,7 @@ h1 {
     color: black;
     position: fixed;
     opacity: 0;
+    background-color: #23A6D5;
 }
 
 .modal-position {
