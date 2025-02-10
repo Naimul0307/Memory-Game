@@ -1,0 +1,113 @@
+/*** MEDIA QUERIES ***/
+
+/* MOBILES */
+ @media screen and (min-width: 400px) {
+ 	h1 {
+    	font-size: 48px;
+    }
+    .deck {
+	    width: 320px;
+	    min-height: 340px;
+	    padding: 20px 20px 20px 20px;
+	}
+	.deck .card {
+		height: 60px;
+    	width: 60px;
+    }
+    .deck .card.show {
+    	font-size: 22px;
+	}
+	.deck .card.match {
+    font-size: 22px;
+	}
+	footer {
+    	margin-left: 20px;
+    }
+}
+
+/* IPAD */
+ @media screen and (min-width: 750px) {
+ 	h1 {
+    	font-size: 72px;
+    	margin: 10px 0 10px 0;
+    }
+    .score-panel {
+	    width: 500px;
+	}
+	.score-panel .stars {
+    	font-size: 24px;
+	}
+	.moves {
+    	text-align: right;
+    	padding-right: 10px;
+	}
+	.score-panel-subtitles {
+    	font-size: 32px;
+	}
+	button {
+	    background: transparent;
+	    border: none;
+	    font-size: 32px;
+	    padding: 15px;
+	}
+    .deck {
+	    width: 560px;
+	    min-height: 580px;
+	    padding: 28px 32px 32px 32px;
+	}
+	.deck .card {
+		height: 100px;
+    	width: 100px;
+    }
+    .deck .card.show {
+    	font-size: 32px;
+	}
+	.deck .card.match {
+    	font-size: 32px;
+	}
+	#modal {
+    	width: 600px;
+    }
+    .inner-modal {
+	    font-size: 36px;
+	}	
+	.playAgain {
+	    padding: 10px;
+	    padding-right: 20px;
+	    padding-left: 20px;
+	    font-size: 32px;
+	}
+}
+
+
+/* IPAD PRO*/
+ @media screen and (min-width: 1024px) {
+ 	h1 {
+    	font-size: 90px;
+    	margin: 10px 0 10px 0;
+    }
+    .score-panel {
+	    width: 596px;
+	}
+	.score-panel-subtitles {
+    	font-size: 36px;
+	}
+	button {
+	    font-size: 36px;
+	}
+    .deck {
+	    width: 660px;
+	    min-height: 680px;
+	    padding: 32px;
+	}
+	.deck .card {
+		height: 125px;
+    	width: 125px;
+    }
+    .deck .card.show {
+    	font-size: 33px;
+	}
+	.deck .card.match {
+    	font-size: 33px;
+	}
+}
