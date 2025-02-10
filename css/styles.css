@@ -140,26 +140,16 @@ h1 {
     justify-content: center;
     align-items: center;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
-    /* ===CARBON EFFECT ORIGINAL CODE BY Peter Schmalfeldt=== */
-    background: linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px, linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px, linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px, linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px, linear-gradient(90deg, #1b1b1b 10px, transparent 10px), linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
+    background: url(../background/download\ \(3\).jfif) no-repeat center center;
+    background-size: cover;
     background-color: #131313;
-    background-size: 20px 20px;
 }
 
-.deck .card.open {
-    transform: rotateY(0);
-    background: #eeb152;
-    cursor: default;
-}
-
-.deck .card.show {
-    font-size: 16px;
-}
-
-.deck .card.match {
-    cursor: default;
-    background: #02ccba;
-    font-size: 16px;
+.card img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;  /* Optional: To match the border radius of the card */
 }
 
 /*** GRID SYSTEM ***/

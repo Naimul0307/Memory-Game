@@ -191,36 +191,6 @@ function starRating() {
   }
 }
 
-
-function starReset() {
-  for (let star of stars.children) {
-   star.children[0].classList.replace('far', 'fa');
-  }
-}
-
-
-//remove 'match' class and empty array of matchedCards
-function restartGame () {
-  shuffleCards();
-  matchedCards.map(function(currentVal) {
-    currentVal.classList.remove('match');
-  });
-  matchedCards = [];
-  clearInterval(interval);
-  interval = null;
-  time = 0;
-  moves = 0;
-  starReset();
-    movesEl.map(function(val){
-      val.textContent = moves;
-    });
-  elTimer.innerHTML = "00:00";
-  modal.classList.remove('animation');
-  modal.style.opacity = "0";
-  console.log(modal); //debug
-}
-
-
 // for of loop to get each element of the array
 // per iteration and give it an Event Listener
 // for each element that contains the class restart.
