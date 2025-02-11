@@ -216,7 +216,7 @@ function starRating() {
 }
 
 // Per iteration and give it an Event Listener
-function updateModal() {
+function updateModal(displayedTime) {
   starRating();
   modal.classList.add("animation");
   modal.style.opacity = "100";
@@ -227,15 +227,12 @@ function updateModal() {
   const winHeader = document.querySelector('.winHeader');
   winHeader.innerHTML = `Congratulations <br> ${userName} <br> You Win!`;
 
-  // Get timer value directly from the displayed timer
-  const displayedTime = elTimer.innerHTML;
-
   // Get rating
   const ratingStars = stars.innerHTML;
 
   // Update modal data
   numMoves.innerHTML = moves;
-  gameTime.innerHTML = displayedTime;
+  gameTime.innerHTML = displayedTime; // Show actual time taken
   finalRating.innerHTML = ratingStars;
   finalRating.classList.add("stars");
 
@@ -243,12 +240,20 @@ function updateModal() {
   saveGameData(userName, moves, displayedTime, ratingStars);
 }
 
-
 function gameWin() {
   if (matchedCards.length === cards.length) {
     clearInterval(interval); // Stop the countdown timer
     interval = null;
-    updateModal(); // Show the modal with final stats
+
+    // Calculate time taken
+    let timeTaken = timeLimit - countdownTime; // Total time spent
+    let minutes = Math.floor(timeTaken / 60);
+    let seconds = timeTaken % 60;
+
+    // Format time taken
+    let formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+    updateModal(formattedTime); // Pass calculated time to modal update
   }
 }
 
@@ -274,6 +279,9 @@ function gameOver() {
   gameTime.innerHTML = displayedTime;
   finalRating.innerHTML = "☆☆☆"; // Default rating for game over
 
+  // Get user data
+  const userName = localStorage.getItem('fileName') || 'Guest';
+
   // Save game-over data in localStorage
   saveGameData(userName, moves, displayedTime, "Game Over");
 
@@ -287,6 +295,21 @@ function gameOver() {
     resetGame();
   }, 5000); // Adjust delay before reset if needed
 }
+
+function saveGameData(user, moves, displayedTime, ratingStars) {
+  const gameData = JSON.parse(localStorage.getItem("gameHistory")) || [];
+  
+  gameData.push({
+    user: user,
+    moves: moves,
+    time: displayedTime,
+    rating: ratingStars,
+    date: new Date().toLocaleString() // Save date & time of the game
+  });
+
+  localStorage.setItem("gameHistory", JSON.stringify(gameData));
+}
+
 
 // Reset the game when it's over
 function resetGame() {
