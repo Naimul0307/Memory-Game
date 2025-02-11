@@ -199,15 +199,21 @@ function timer() {
 }
 
 function starRating() {
+  let rating = "☆☆☆"; // Default rating
+
   if (moves >= 25) {
     for (let i = stars.children.length; i >= 2; i--) {
       stars.children[i - 1].children[0].classList.replace("fa", "far");
     }
+    rating = "☆";
   } else if (moves >= 15) {
     for (let i = stars.children.length; i >= 3; i--) {
       stars.children[i - 1].children[0].classList.replace("fa", "far");
     }
+    rating = "☆☆";
   }
+
+  return rating;
 }
 
 // Function to handle game win scenario
@@ -224,13 +230,15 @@ function gameWin() {
     // Format time taken
     let formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
+    // Get the actual rating
+    const rating = starRating();
+
     // Save the game win data
     const userName = localStorage.getItem('fileName') || 'Guest';
-    saveGameData(userName, moves, formattedTime, "☆☆☆");
+    saveGameData(userName, moves, formattedTime, rating);
   }
 }
 
-// Function to handle game over scenario
 function gameOver() {
   // Stop the timer
   clearInterval(interval);
@@ -246,15 +254,17 @@ function gameOver() {
   // Update the final rating and other game details
   numMoves.innerHTML = moves;
   gameTime.innerHTML = displayedTime;
-  finalRating.innerHTML = "☆☆☆"; // Default rating for game over
+
+  // Get the actual rating
+  const rating = starRating();
+  finalRating.innerHTML = rating;
 
   // Get user data
   const userName = localStorage.getItem('fileName') || 'Guest';
 
   // Save game-over data in localStorage
-  saveGameData(userName, moves, displayedTime, "Game Over");
+  saveGameData(userName, moves, displayedTime, rating);
 }
-
 // Function to save game data in localStorage
 function saveGameData(user, moves, displayedTime, ratingStars) {
   // Retrieve existing data or initialize an empty array
@@ -293,22 +303,26 @@ function resetGame() {
 function getHighestScore() {
   let gameHistory = JSON.parse(localStorage.getItem("gameHistory")) || [];
 
+  // Filter out games with "00:00" time
+  gameHistory = gameHistory.filter(game => game.time !== "00:00");
+
   if (gameHistory.length === 0) {
-      console.log("No game history found.");
-      return null;
+    console.log("No valid game history found.");
+    return null;
   }
 
-  // Sort by moves (ascending) and then by time (ascending)
+  // Sort by time first, then by moves if times are the same
   gameHistory.sort((a, b) => {
-      if (a.moves === b.moves) {
-          // If moves are the same, compare time
-          let [aMin, aSec] = a.time.split(":").map(Number);
-          let [bMin, bSec] = b.time.split(":").map(Number);
-          let aTotalSeconds = aMin * 60 + aSec;
-          let bTotalSeconds = bMin * 60 + bSec;
-          return aTotalSeconds - bTotalSeconds;
-      }
-      return a.moves - b.moves;
+    let [aMin, aSec] = a.time.split(":").map(Number);
+    let [bMin, bSec] = b.time.split(":").map(Number);
+    let aTotalSeconds = aMin * 60 + aSec;
+    let bTotalSeconds = bMin * 60 + bSec;
+    
+    // Sort by time in ascending order, then by moves if times are equal
+    if (aTotalSeconds === bTotalSeconds) {
+      return a.moves - b.moves; // Sort by moves in ascending order
+    }
+    return aTotalSeconds - bTotalSeconds; // Sort by time in ascending order
   });
 
   let bestGame = gameHistory[0]; // The first item is now the best score
@@ -320,7 +334,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (bestGame) {
       document.getElementById("bestScore").innerHTML = `
-          <strong>Best Score:</strong> ${bestGame.user}Time: ${bestGame.time}  |
+          <strong>Best Score:</strong> ${bestGame.user} Time: ${bestGame.time}
       `;
   } else {
       document.getElementById("bestScore").textContent = "No high scores yet!";
