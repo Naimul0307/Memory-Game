@@ -13,6 +13,7 @@ const modal = document.getElementById("modal");
 let numMoves = document.querySelector(".numMoves");
 let gameTime = document.querySelector(".gameTime");
 let finalRating = document.querySelector(".finalRating");
+const userName = localStorage.getItem('fileName');
 
 document.addEventListener('DOMContentLoaded', function () {
   const userName = localStorage.getItem('fileName');
@@ -172,10 +173,8 @@ let matchedCards = [];
 let displayCards = [];
 
 function moveCount() {
-  moves++;
-  movesEl.map(function (val) {
-    val.textContent = moves;
-  });
+  moves++;  // Increment the moves count
+  document.querySelector(".moves").textContent = `Moves: ${moves}`;  
 }
 
 function timer() {
@@ -216,19 +215,32 @@ function starRating() {
   }
 }
 
-// For of loop to get each element of the array
 // Per iteration and give it an Event Listener
-
 function updateModal() {
   starRating();
   modal.classList.add("animation");
   modal.style.opacity = "100";
   modal.classList.add("show");
 
+  // Get user data
+  const userName = localStorage.getItem('fileName') || 'Guest';
+  const winHeader = document.querySelector('.winHeader');
+  winHeader.innerHTML = `Congratulations <br> ${userName} <br> You Win!`;
+
+  // Get timer value directly from the displayed timer
+  const displayedTime = elTimer.innerHTML;
+
+  // Get rating
+  const ratingStars = stars.innerHTML;
+
+  // Update modal data
   numMoves.innerHTML = moves;
-  gameTime.innerHTML = `${Math.floor(countdownTime / 60)}:${countdownTime % 60}`;
-  finalRating.innerHTML = stars.innerHTML;
+  gameTime.innerHTML = displayedTime;
+  finalRating.innerHTML = ratingStars;
   finalRating.classList.add("stars");
+
+  // Save game data in localStorage
+  saveGameData(userName, moves, displayedTime, ratingStars);
 }
 
 
@@ -246,26 +258,34 @@ function gameOver() {
   clearInterval(interval);
   interval = null;
 
+  // Ensure the timer displays 00:00 when game is over
+  countdownTime = 0;
+  elTimer.innerHTML = "00:00";
+
   // Update the modal with game over message
   const modalMessage = document.querySelector('.winHeader');
   modalMessage.innerHTML = "Game Over! <br />You ran out of time.";
 
-  // Update the final rating and other game details
-  const numMovesElement = document.querySelector(".numMoves");
-  const gameTimeElement = document.querySelector(".gameTime");
+  // Set the displayed time as 00:00 explicitly
+  const displayedTime = "00:00";
 
-  numMovesElement.innerHTML = moves;
-  gameTimeElement.innerHTML = `${Math.floor(countdownTime / 60)}:${countdownTime % 60}`;
+  // Update the final rating and other game details
+  numMoves.innerHTML = moves;
+  gameTime.innerHTML = displayedTime;
+  finalRating.innerHTML = "☆☆☆"; // Default rating for game over
+
+  // Save game-over data in localStorage
+  saveGameData(userName, moves, displayedTime, "Game Over");
 
   // Show the modal
   modal.classList.add("animation");
   modal.style.opacity = "100";
-  modal.classList.add("show"); // To ensure the modal is visible
+  modal.classList.add("show");
 
-  // Optionally, reset game state after a delay
-  setTimeout(function() {
-    resetGame();  // Reset the game after showing the modal for a while
-  }, 5000); // You can adjust the time delay before reset if needed
+  // Optionally, reset the game after a delay
+  setTimeout(function () {
+    resetGame();
+  }, 5000); // Adjust delay before reset if needed
 }
 
 // Reset the game when it's over
@@ -277,4 +297,18 @@ function resetGame() {
   countdownTime = timeLimit; // Reset countdown timer to the initial time limit
   elTimer.innerHTML = `${Math.floor(countdownTime / 60)}:00`; // Reset timer display
   shuffleCards();
+}
+
+function saveGameData(user, moves, displayedTime, ratingStars) {
+  const gameData = JSON.parse(localStorage.getItem("gameHistory")) || [];
+  
+  gameData.push({
+    user: user,
+    moves: moves,
+    time: displayedTime,
+    rating: ratingStars,
+    date: new Date().toLocaleString() // Save date & time of the game
+  });
+
+  localStorage.setItem("gameHistory", JSON.stringify(gameData));
 }
