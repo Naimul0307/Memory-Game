@@ -215,7 +215,7 @@ function starRating() {
   }
 }
 
-// Per iteration and give it an Event Listener
+// Function to update and show the modal after winning
 function updateModal(displayedTime) {
   starRating();
   modal.classList.add("animation");
@@ -240,6 +240,7 @@ function updateModal(displayedTime) {
   saveGameData(userName, moves, displayedTime, ratingStars);
 }
 
+// Function to handle game win scenario
 function gameWin() {
   if (matchedCards.length === cards.length) {
     clearInterval(interval); // Stop the countdown timer
@@ -257,7 +258,7 @@ function gameWin() {
   }
 }
 
-// Game Over function called when time reaches 0
+// Function to handle game over scenario
 function gameOver() {
   // Stop the timer
   clearInterval(interval);
@@ -296,10 +297,13 @@ function gameOver() {
   }, 5000); // Adjust delay before reset if needed
 }
 
+// Function to save game data in localStorage
 function saveGameData(user, moves, displayedTime, ratingStars) {
-  const gameData = JSON.parse(localStorage.getItem("gameHistory")) || [];
-  
-  gameData.push({
+  // Retrieve existing data or initialize an empty array
+  let gameHistory = JSON.parse(localStorage.getItem("gameHistory")) || [];
+
+  // Append new game data
+  gameHistory.push({
     user: user,
     moves: moves,
     time: displayedTime,
@@ -307,9 +311,15 @@ function saveGameData(user, moves, displayedTime, ratingStars) {
     date: new Date().toLocaleString() // Save date & time of the game
   });
 
-  localStorage.setItem("gameHistory", JSON.stringify(gameData));
+  // Save back to localStorage
+  localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
 }
 
+// Function to retrieve and display game history (optional)
+function getGameHistory() {
+  let gameHistory = JSON.parse(localStorage.getItem("gameHistory")) || [];
+  console.log("Game History:", gameHistory);
+}
 
 // Reset the game when it's over
 function resetGame() {
