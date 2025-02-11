@@ -201,8 +201,8 @@ h1 {
 /*** SCORE PANEL ***/
 
 .score-panel {
-    text-align: left;
-    width: 80%; /* Increase width of score panel */
+    text-align: center;
+    width: 90%; /* Increase width of score panel */
 }
 
 .score-panel .stars {
@@ -218,7 +218,9 @@ h1 {
     list-style: none;
     display: inline-block;
 }
-
+#bestScore{
+    color: #d6110a;
+}
 .moves {
     text-align: right;
     padding-right: 10px;

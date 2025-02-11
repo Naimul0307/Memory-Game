@@ -1,5 +1,4 @@
 /* GLOBAL VARIABLES */
-
 const deck = document.getElementById("deck");
 const stars = document.querySelector(".stars");
 const elTimer = document.querySelector(".timer");
@@ -345,3 +344,40 @@ function saveGameData(user, moves, displayedTime, ratingStars) {
 
   localStorage.setItem("gameHistory", JSON.stringify(gameData));
 }
+
+function getHighestScore() {
+  let gameHistory = JSON.parse(localStorage.getItem("gameHistory")) || [];
+
+  if (gameHistory.length === 0) {
+      console.log("No game history found.");
+      return null;
+  }
+
+  // Sort by moves (ascending) and then by time (ascending)
+  gameHistory.sort((a, b) => {
+      if (a.moves === b.moves) {
+          // If moves are the same, compare time
+          let [aMin, aSec] = a.time.split(":").map(Number);
+          let [bMin, bSec] = b.time.split(":").map(Number);
+          let aTotalSeconds = aMin * 60 + aSec;
+          let bTotalSeconds = bMin * 60 + bSec;
+          return aTotalSeconds - bTotalSeconds;
+      }
+      return a.moves - b.moves;
+  });
+
+  let bestGame = gameHistory[0]; // The first item is now the best score
+  return bestGame;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const bestGame = getHighestScore();
+
+  if (bestGame) {
+      document.getElementById("bestScore").innerHTML = `
+          <strong>Best Score:</strong> ${bestGame.user},Moves: ${bestGame.moves}, Time: ${bestGame.time}  |
+      `;
+  } else {
+      document.getElementById("bestScore").textContent = "No high scores yet!";
+  }
+});
