@@ -51,7 +51,6 @@ function shuffle(array) {
   return array;
 }
 
-// Call the shuffle function upon the array of cards and store the value
 function shuffleCards() {
   let shuffledCards = shuffle(cards);
   
@@ -75,12 +74,28 @@ function shuffleCards() {
   let allCards = document.querySelectorAll(".card");
   allCards.forEach(card => card.classList.add("flip"));
 
-  // After 3 seconds, flip them back
+  // After 5 seconds, flip them back and then start the countdown
   setTimeout(function () {
     allCards.forEach(card => card.classList.remove("flip"));
-  }, 5000);
+    
+    // Start the countdown timer AFTER the flip animation
+    startCountdown();
+  }, 5000);  // Wait for flip animation to finish before starting countdown
 }
 
+// Function to start countdown
+function startCountdown() {
+  if (!interval) { // Prevent multiple countdowns
+    interval = setInterval(function () {
+      timer();
+    }, 1000);
+  }
+}
+
+// Start game when page loads
+window.onload = function () {
+  shuffleCards();
+};
 
 
 /*** GAMEPLAY function ***/
@@ -88,58 +103,94 @@ function shuffleCards() {
 // If open cards = 2 and match class, add class 'match'
 // On click, trigger moveCount(), starRating() and gameWin()
 // Set timeout to close non-matched cards
+// deck.addEventListener("click", function deckClickHandler(e) {
+//   let clickedCard = e.target.closest(".card"); // Ensure the card element is selected
+
+//   // Start the timer when the first card is clicked
+//   if (clickedCard && !interval) {
+//     interval = setInterval(function () {
+//       timer();
+//     }, 1000);
+//   }
+
+//   // If the clicked element is a card and it's not already open or matched
+//   if (
+//     clickedCard &&
+//     openCards.length < 2 &&
+//     !clickedCard.classList.contains("open") &&
+//     !clickedCard.classList.contains("match")
+//   ) {
+//     openCards.push(clickedCard);
+//     clickedCard.classList.add("flip", "open"); // Flip the card
+//   }
+
+//   // Once two cards are open, check for a match
+//   if (openCards.length === 2) {
+//     let card1 = openCards[0];
+//     let card2 = openCards[1];
+
+//     // Compare the src of the images inside both cards to check for a match
+//     if (card1.querySelector("img").src === card2.querySelector("img").src) {
+//       // If the cards match, add the match class
+//       matchedCards.push(card1, card2);
+//       matchedCards.forEach(function (currentVal) {
+//         currentVal.classList.add("match");
+//       });
+//     }
+
+//     // Call moveCount and other game logic functions
+//     moveCount();
+//     starRating();
+//     gameWin();
+
+//     // Flip the cards back if they do not match
+//     setTimeout(function () {
+//       openCards.forEach(function (currentVal) {
+//         if (!currentVal.classList.contains("match")) {
+//           currentVal.classList.remove("flip", "open");
+//         }
+//       });
+//       openCards = []; // Reset openCards array
+//     }, 800); // Delay before flipping back
+//   }
+// });
+
 deck.addEventListener("click", function deckClickHandler(e) {
-  let clickedCard = e.target.closest(".card"); // Ensure the card element is selected
+  let clickedCard = e.target.closest(".card");
 
-  // Start the timer when the first card is clicked
-  if (clickedCard && !interval) {
-    interval = setInterval(function () {
-      timer();
-    }, 1000);
+  if (!clickedCard || clickedCard.classList.contains("open") || clickedCard.classList.contains("match")) {
+    return;
   }
 
-  // If the clicked element is a card and it's not already open or matched
-  if (
-    clickedCard &&
-    openCards.length < 2 &&
-    !clickedCard.classList.contains("open") &&
-    !clickedCard.classList.contains("match")
-  ) {
-    openCards.push(clickedCard);
-    clickedCard.classList.add("flip", "open"); // Flip the card
-  }
+  openCards.push(clickedCard);
+  clickedCard.classList.add("flip", "open");
 
-  // Once two cards are open, check for a match
   if (openCards.length === 2) {
     let card1 = openCards[0];
     let card2 = openCards[1];
 
-    // Compare the src of the images inside both cards to check for a match
     if (card1.querySelector("img").src === card2.querySelector("img").src) {
-      // If the cards match, add the match class
       matchedCards.push(card1, card2);
-      matchedCards.forEach(function (currentVal) {
-        currentVal.classList.add("match");
-      });
+      card1.classList.add("match");
+      card2.classList.add("match");
+      
+      openCards = []; // Reset openCards array
+      
+      if (matchedCards.length === cards.length) {
+        gameWin(); // Call gameWin() when all cards are matched
+      }
+    } else {
+      setTimeout(function () {
+        card1.classList.remove("flip", "open");
+        card2.classList.remove("flip", "open");
+        openCards = [];
+      }, 800);
     }
-
-    // Call moveCount and other game logic functions
+    
     moveCount();
     starRating();
-    gameWin();
-
-    // Flip the cards back if they do not match
-    setTimeout(function () {
-      openCards.forEach(function (currentVal) {
-        if (!currentVal.classList.contains("match")) {
-          currentVal.classList.remove("flip", "open");
-        }
-      });
-      openCards = []; // Reset openCards array
-    }, 800); // Delay before flipping back
   }
 });
-
 
 shuffleCards();
 
@@ -214,15 +265,13 @@ function updateModal() {
 
 
 function gameWin() {
-  if (matchedCards.length == cards.length) {
-    clearInterval(interval);
+  if (matchedCards.length === cards.length) {
+    clearInterval(interval); // Stop the countdown timer
     interval = null;
-    updateModal();
-    console.log(modal); // Debug
+    updateModal(); // Show the modal with final stats
   }
 }
 
-// Game Over function called when time reaches 0
 // Game Over function called when time reaches 0
 function gameOver() {
   // Stop the timer
