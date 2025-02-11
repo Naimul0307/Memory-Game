@@ -236,6 +236,9 @@ function gameWin() {
     // Save the game win data
     const userName = localStorage.getItem('fileName') || 'Guest';
     saveGameData(userName, moves, formattedTime, rating);
+
+    // Redirect to the thanks.html page after saving game data
+    window.location.href = "thanks.html"; // This line redirects to thanks.html
   }
 }
 
@@ -244,27 +247,39 @@ function gameOver() {
   clearInterval(interval);
   interval = null;
 
-  // Ensure the timer displays 00:00 when game is over
+  // Ensure the timer displays 00:00
   countdownTime = 0;
   elTimer.innerHTML = "00:00";
-
-  // Set the displayed time as 00:00 explicitly
-  const displayedTime = "00:00";
-
-  // Update the final rating and other game details
-  numMoves.innerHTML = moves;
-  gameTime.innerHTML = displayedTime;
-
-  // Get the actual rating
-  const rating = starRating();
-  finalRating.innerHTML = rating;
 
   // Get user data
   const userName = localStorage.getItem('fileName') || 'Guest';
 
-  // Save game-over data in localStorage
-  saveGameData(userName, moves, displayedTime, rating);
+  // Default values
+  const defaultTime = "00:00";
+  const defaultRating = "null";
+  const movesValue = moves ? moves : 0; 
+
+  // Retrieve existing game history or initialize an empty array
+  let gameHistory = JSON.parse(localStorage.getItem("gameHistory")) || [];
+
+  // Append new game-over data
+  gameHistory.push({
+    user: userName,
+    moves: movesValue,
+    time: defaultTime,
+    rating: defaultRating,
+    date: new Date().toLocaleString() // Save date & time of the game
+  });
+
+  // Save back to localStorage
+  localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
+
+  // Redirect to the thanks page after a short delay
+  setTimeout(function () {
+      window.location.href = "thanks.html";
+  }, 2000); // 2-second delay before redirect
 }
+
 // Function to save game data in localStorage
 function saveGameData(user, moves, displayedTime, ratingStars) {
   // Retrieve existing data or initialize an empty array

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Thank you for playing!">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/thanks.css">
+    <title>Matching Game - Thanks</title>
+</head>
+<body>
+    <div class="container">
+        <!-- First Modal (For successful game completion) -->
+        <div id="modal-win" class="modal-position" style="display:none;">
+            <div class="inner-modal">
+                <p class="winHeader"></p>
+                <span class="finalRating"></span>
+                <p>You completed the game in <span class="numMoves">0</span> moves</p>
+                <p>Game Time: <span class="gameTime">00:00</span></p>
+            </div>
+        </div>
+        
+        <!-- Second Modal (For Time Up scenario) -->
+        <div id="modal-timeup" class="modal-position" style="display:none;">
+            <div class="inner-modal">
+                <p class="winHeader"></p>
+                <span class="finalRating"></span>
+                <p>Time's Up! Try Next Time</p>
+                <p>You completed the game in <span class="numMoves">0</span> moves</p>
+                <p>Game Time: <span class="gameTime">00:00</span></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Retrieve the latest game data from localStorage
+            const gameHistory = JSON.parse(localStorage.getItem("gameHistory")) || [];
+            const latestGame = gameHistory[gameHistory.length - 1]; // Get the latest game entry
+
+            if (latestGame) {
+                // Check if the game was won or lost based on the time
+                let winMessage = "Congratulations, " + latestGame.user + "!";
+                let ratingMessage = `Rating: ${latestGame.rating}`;
+
+                if (latestGame.time === "00:00") {
+                    // If time is "00:00", show Time's Up modal
+                    document.getElementById("modal-timeup").style.display = "block";
+                    document.getElementById("modal-win").style.display = "none"; // Hide win modal
+                    winMessage = `Time's Up, ${latestGame.user}!`;
+                    ratingMessage = "You ran out of time!";
+                } else {
+                    // If game was completed successfully, show the win modal
+                    document.getElementById("modal-win").style.display = "block";
+                    document.getElementById("modal-timeup").style.display = "none"; // Hide time-up modal
+                }
+
+                // Display the appropriate messages
+                document.querySelector(".winHeader").textContent = winMessage;
+                document.querySelector(".finalRating").textContent = ratingMessage;
+                document.querySelector(".numMoves").textContent = latestGame.moves;
+                document.querySelector(".gameTime").textContent = latestGame.time;
+            } else {
+                // If no game data exists, show a default message
+                document.querySelector(".winHeader").textContent = "No game data found.";
+                document.querySelector(".numMoves").textContent = "0";
+                document.querySelector(".gameTime").textContent = "00:00";
+            }
+        });
+    </script>
+</body>
+</html>
