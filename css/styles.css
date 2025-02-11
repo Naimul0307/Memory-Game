@@ -224,6 +224,7 @@ h1 {
     font-size: 12px; /* Slightly larger font */
     overflow: visible;
     font-weight: bolder;
+    color: #EE7752;
 }
 
 .score-panel .stars li {
