@@ -37,30 +37,38 @@
         document.addEventListener("DOMContentLoaded", function() {
             // Retrieve the latest game data from localStorage
             const gameHistory = JSON.parse(localStorage.getItem("gameHistory")) || [];
-            const latestGame = gameHistory[gameHistory.length - 1]; // Get the latest game entry
-
+            const latestGame = gameHistory.length > 0 ? gameHistory[gameHistory.length - 1] : null; // Get the latest game entry
+        
             if (latestGame) {
-                // Check if the game was won or lost based on the time
-                let winMessage = "Congratulations, " + latestGame.user + "!";
-                let ratingMessage = `Rating: ${latestGame.rating}`;
-
-                if (latestGame.time === "00:00") {
-                    // If time is "00:00", show Time's Up modal
+                // Ensure values exist; if undefined, set default values
+                const userName = latestGame.user || "Unknown Player";
+                const moves = latestGame.moves !== undefined ? latestGame.moves : "0";
+                const time = latestGame.time || "00:00";
+                let winMessage = `Congratulations, ${userName}!`;
+                let ratingMessage = `Rating: ${latestGame.rating || "N/A"}`;
+        
+                if (time === "00:00") {
+                    // Show Time's Up modal
                     document.getElementById("modal-timeup").style.display = "block";
                     document.getElementById("modal-win").style.display = "none"; // Hide win modal
-                    winMessage = `Time's Up, ${latestGame.user}!`;
+                    winMessage = `Time's Up, ${userName}!`;
                     ratingMessage = "You ran out of time!";
                 } else {
-                    // If game was completed successfully, show the win modal
+                    // Show the win modal if the game was completed
                     document.getElementById("modal-win").style.display = "block";
                     document.getElementById("modal-timeup").style.display = "none"; // Hide time-up modal
                 }
-
-                // Display the appropriate messages
+        
+                // Display the messages
                 document.querySelector(".winHeader").textContent = winMessage;
                 document.querySelector(".finalRating").textContent = ratingMessage;
-                document.querySelector(".numMoves").textContent = latestGame.moves;
-                document.querySelector(".gameTime").textContent = latestGame.time;
+                document.querySelector(".numMoves").textContent = moves; // Always show moves
+                document.querySelector(".gameTime").textContent = time;
+        
+                // Redirect after 10 seconds
+                setTimeout(function() {
+                    window.location.href = "index.html"; // Redirect to index.html
+                }, 10000); // 10000 milliseconds = 10 seconds
             } else {
                 // If no game data exists, show a default message
                 document.querySelector(".winHeader").textContent = "No game data found.";
@@ -69,5 +77,6 @@
             }
         });
     </script>
+        
 </body>
 </html>

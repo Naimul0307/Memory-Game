@@ -274,10 +274,8 @@ function gameOver() {
   // Save back to localStorage
   localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
 
-  // Redirect to the thanks page after a short delay
-  setTimeout(function () {
-      window.location.href = "thanks.html";
-  }, 2000); // 2-second delay before redirect
+   // Redirect to the thanks.html page after saving game data
+   window.location.href = "thanks.html"; // This line redirects to thanks.html
 }
 
 // Function to save game data in localStorage
