@@ -14,6 +14,15 @@ let numMoves = document.querySelector(".numMoves");
 let gameTime = document.querySelector(".gameTime");
 let finalRating = document.querySelector(".finalRating");
 
+document.addEventListener('DOMContentLoaded', function () {
+  const userName = localStorage.getItem('fileName');
+  if (userName) {
+      document.getElementById('userName').textContent = userName;
+  } else {
+      document.getElementById('userName').textContent = 'No name saved';
+  }
+});
+
 // Array to store cards classes
 const cards = [
   "images/gift1.jpg",

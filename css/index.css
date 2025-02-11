@@ -1,0 +1,33 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #f0f0f0;
+}
+
+.content {
+    text-align: center;
+}
+
+.redirect-btn {
+    position: fixed;
+    bottom: 20px; /* Distance from the bottom of the page */
+    left: 50%;
+    transform: translateX(-50%); /* Center the button horizontally */
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.redirect-btn:hover {
+    background-color: #45a049;
+}
