@@ -8,7 +8,6 @@ let moves = 0;
 let interval = null;
 let timeLimit = 60; // Countdown timer set to 60 seconds (1 minute)
 let countdownTime = timeLimit;
-const modal = document.getElementById("modal");
 let numMoves = document.querySelector(".numMoves");
 let gameTime = document.querySelector(".gameTime");
 let finalRating = document.querySelector(".finalRating");
@@ -105,7 +104,6 @@ function startCountdown() {
 window.onload = function () {
   shuffleCards();
 };
-
 
 /*** GAMEPLAY function ***/
 deck.addEventListener("click", function deckClickHandler(e) {
@@ -204,39 +202,12 @@ function starRating() {
   if (moves >= 25) {
     for (let i = stars.children.length; i >= 2; i--) {
       stars.children[i - 1].children[0].classList.replace("fa", "far");
-      console.log("3 stars");
     }
   } else if (moves >= 15) {
     for (let i = stars.children.length; i >= 3; i--) {
       stars.children[i - 1].children[0].classList.replace("fa", "far");
-      console.log("5 stars");
     }
   }
-}
-
-// Function to update and show the modal after winning
-function updateModal(displayedTime) {
-  starRating();
-  modal.classList.add("animation");
-  modal.style.opacity = "100";
-  modal.classList.add("show");
-
-  // Get user data
-  const userName = localStorage.getItem('fileName') || 'Guest';
-  const winHeader = document.querySelector('.winHeader');
-  winHeader.innerHTML = `Congratulations <br> ${userName} <br> You Win!`;
-
-  // Get rating
-  const ratingStars = stars.innerHTML;
-
-  // Update modal data
-  numMoves.innerHTML = moves;
-  gameTime.innerHTML = displayedTime; // Show actual time taken
-  finalRating.innerHTML = ratingStars;
-  finalRating.classList.add("stars");
-
-  // Save game data in localStorage
-  saveGameData(userName, moves, displayedTime, ratingStars);
 }
 
 // Function to handle game win scenario
@@ -253,7 +224,9 @@ function gameWin() {
     // Format time taken
     let formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-    updateModal(formattedTime); // Pass calculated time to modal update
+    // Save the game win data
+    const userName = localStorage.getItem('fileName') || 'Guest';
+    saveGameData(userName, moves, formattedTime, "☆☆☆");
   }
 }
 
@@ -266,10 +239,6 @@ function gameOver() {
   // Ensure the timer displays 00:00 when game is over
   countdownTime = 0;
   elTimer.innerHTML = "00:00";
-
-  // Update the modal with game over message
-  const modalMessage = document.querySelector('.winHeader');
-  modalMessage.innerHTML = "Game Over! <br />You ran out of time.";
 
   // Set the displayed time as 00:00 explicitly
   const displayedTime = "00:00";
@@ -284,16 +253,6 @@ function gameOver() {
 
   // Save game-over data in localStorage
   saveGameData(userName, moves, displayedTime, "Game Over");
-
-  // Show the modal
-  modal.classList.add("animation");
-  modal.style.opacity = "100";
-  modal.classList.add("show");
-
-  // Optionally, reset the game after a delay
-  setTimeout(function () {
-    resetGame();
-  }, 5000); // Adjust delay before reset if needed
 }
 
 // Function to save game data in localStorage
@@ -331,20 +290,6 @@ function resetGame() {
   shuffleCards();
 }
 
-function saveGameData(user, moves, displayedTime, ratingStars) {
-  const gameData = JSON.parse(localStorage.getItem("gameHistory")) || [];
-  
-  gameData.push({
-    user: user,
-    moves: moves,
-    time: displayedTime,
-    rating: ratingStars,
-    date: new Date().toLocaleString() // Save date & time of the game
-  });
-
-  localStorage.setItem("gameHistory", JSON.stringify(gameData));
-}
-
 function getHighestScore() {
   let gameHistory = JSON.parse(localStorage.getItem("gameHistory")) || [];
 
@@ -375,7 +320,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (bestGame) {
       document.getElementById("bestScore").innerHTML = `
-          <strong>Best Score:</strong> ${bestGame.user},Moves: ${bestGame.moves}, Time: ${bestGame.time}  |
+          <strong>Best Score:</strong> ${bestGame.user}Time: ${bestGame.time}  |
       `;
   } else {
       document.getElementById("bestScore").textContent = "No high scores yet!";
