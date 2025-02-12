@@ -1,0 +1,108 @@
+/* Responsive Design */
+@media screen and (max-width: 1080px) and (max-height: 1920px) {
+    body {
+        font-size: 16px; /* Adjust font size for smaller screens */
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 28px; /* Smaller heading */
+        margin-top: 15px;
+    }
+
+    .deck {
+        min-height: 700px;
+        padding: 0 20px 20px 20px;
+    }
+
+    .card {
+        height: 200px;
+        width: 440px;
+        margin: 7px
+    }
+
+    .score-panel {
+        width: 80%;
+        font-size: 25px;
+    }
+
+    .score-panel .stars {
+        font-size: 25px;
+    }
+
+    .score-panel-subtitles {
+        font-size: 25px;
+    }
+
+    /* Adjust for other elements as needed */
+    .moves, .timer {
+        font-size: 25px;
+        padding: 5px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .deck {
+        min-height: 600px;
+        padding: 0 10px 10px 10px;
+    }
+
+    .card {
+        height: 140px;
+        width: 300px;
+    }
+
+    .score-panel {
+        width: 80%;
+        font-size: 16px;
+    }
+
+    .score-panel .stars {
+        font-size: 20px;
+    }
+
+    .score-panel-subtitles {
+        font-size: 20px;
+    }
+
+    /* Adjust for smaller screens */
+    .moves, .timer {
+        font-size: 16px;
+        padding: 5px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 22px; /* Even smaller heading */
+    }
+
+    .card {
+        height: 120px;
+        width: 250px;
+    }
+
+    .score-panel {
+        font-size: 14px;
+    }
+
+    .score-panel .stars {
+        font-size: 18px;
+    }
+
+    .score-panel-subtitles {
+        font-size: 18px;
+    }
+
+    /* Adjust for very small screens */
+    .moves, .timer {
+        font-size: 14px;
+    }
+}

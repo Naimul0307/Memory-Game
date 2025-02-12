@@ -1,0 +1,21 @@
+project-root/
+├── public/
+│   ├── images/
+│   │   ├── gift1.jpg
+│   │   ├── gift2.jpg
+│   │   └── (other gift images)
+│   ├── background/
+│   │   └── download (3).jfif
+│   ├── css/
+│   │   ├── form.css
+│   │   ├── game.css
+│   │   ├── index.css
+│   │   └── thnx.css
+│   ├── js/
+│   │   ├── form.js
+│   │   └── game.js
+├── form.html
+├── game.html
+├── index.html
+└── thanks.html
+

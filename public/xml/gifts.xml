@@ -1,0 +1,50 @@
+<gifts>
+    <gift>
+        <name>Gift 1</name>
+        <image>images/gift1.jpg</image>
+    </gift>
+    <gift>
+        <name>Gift 2</name>
+        <image>images/gift2.jpg</image>
+    </gift>
+    <gift>
+        <name>Gift 3</name>
+        <image>images/gift3.jpg</image>
+    </gift>
+    <gift>
+        <name>Gift 4</name>
+        <image>images/gift4.jpg</image>
+    </gift>
+    <gift>
+        <name>Gift 5</name>
+        <image>images/gift5.jpg</image>
+    </gift>
+    <gift>
+        <name>Gift 6</name>
+        <image>images/gift6.jpg</image>
+    </gift>
+    <gift>
+        <name>Gift 7</name>
+        <image>images/gift7.jpg</image>
+    </gift>
+    <gift>
+        <name>Gift 8</name>
+        <image>images/gift8.jpg</image>
+    </gift>
+        <gift>
+        <name>Gift 9</name>
+        <image>images/gift9.jpg</image>
+    </gift>
+        <gift>
+        <name>Gift 10</name>
+        <image>images/gift10.jpg</image>
+    </gift>
+        <gift>
+        <name>Gift 11</name>
+        <image>images/gift11.jpg</image>
+    </gift>
+        <gift>
+        <name>Gift 12</name>
+        <image>images/gift12.jpg</image>
+    </gift>
+</gifts>

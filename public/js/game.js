@@ -12,7 +12,6 @@ let numMoves = document.querySelector(".numMoves");
 let gameTime = document.querySelector(".gameTime");
 let finalRating = document.querySelector(".finalRating");
 const userName = localStorage.getItem('fileName');
-
 document.addEventListener('DOMContentLoaded', function () {
   const userName = localStorage.getItem('fileName');
   if (userName) {
@@ -24,22 +23,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Array to store cards classes
 const cards = [
-  "images/gift1.jpg",
-  "images/gift2.jpg",
-  "images/gift3.jpg",
-  "images/gift4.jpg",
-  "images/gift5.jpg",
-  "images/gift6.jpg",
-  "images/gift7.jpg",
-  "images/gift8.jpg",
-  "images/gift1.jpg",
-  "images/gift2.jpg",
-  "images/gift3.jpg",
-  "images/gift4.jpg",
-  "images/gift5.jpg",
-  "images/gift6.jpg",
-  "images/gift7.jpg",
-  "images/gift8.jpg",
+  "public/images/gift1.jpg",
+  "public/images/gift2.jpg",
+  "public/images/gift3.jpg",
+  "public/images/gift4.jpg",
+  "public/images/gift5.jpg",
+  "public/images/gift6.jpg",
+  "public/images/gift7.jpg",
+  "public/images/gift8.jpg",
+  "public/images/gift1.jpg",
+  "public/images/gift2.jpg",
+  "public/images/gift3.jpg",
+  "public/images/gift4.jpg",
+  "public/images/gift5.jpg",
+  "public/images/gift6.jpg",
+  "public/images/gift7.jpg",
+  "public/images/gift8.jpg",
 ];
 
 // Shuffle the array of cards

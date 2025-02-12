@@ -1,21 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>From Page</title>
-    <link rel="stylesheet" href="/css/form.css">
+    <meta charset="utf-8">
+    <meta name="description" content="Thank you for playing!">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="public/css/form.css">
+    <link rel="stylesheet" href="public/css/form-responsive.css">
+    <title>Form Page</title>
 </head>
 <body>
     <div class="content">
         <h1>Enter File Name</h1>
         <form id="fileForm">
-            <input type="text" id="fileName" placeholder="Enter file name">
+            <input type="text" id="fileName" placeholder="Enter file name" autofocus>
             <button type="submit">Save and Go to Game</button>
         </form>
     </div>
 
     <script>
+        document.getElementById('fileName').addEventListener('click', function() {
+            // This ensures the keyboard pops up when the input field is clicked
+            this.focus();
+        });
+
         document.getElementById('fileForm').addEventListener('submit', function(event) {
             event.preventDefault();
 

@@ -1,0 +1,61 @@
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    .inner-modal {
+        width: 90%;
+        margin-top: 20px;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+}
+
+/* For screens between 769px and 1080px (small desktop and larger tablets) */
+@media (min-width: 769px) and (max-width: 1080px) {
+    .inner-modal {
+        width: 70%;
+        margin-top: 100px;
+    }
+
+    h1 {
+        font-size: 36px;
+    }
+}
+
+/* For screens larger than 1080px (Large desktops and TVs) */
+@media (min-width: 1081px) {
+    .container {
+        padding: 40px;
+    }
+
+    .inner-modal {
+        width: 50%;
+        margin-top: 150px;
+    }
+
+    h1 {
+        font-size: 48px;
+    }
+}
+
+/* For 1080x1920 screens (portrait orientation) */
+@media (min-width: 1080px) and (max-height: 1920px) {
+    .container {
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .inner-modal {
+        margin-top: 100px;
+    }
+
+    h1 {
+        font-size: 35px;
+        text-align: center;
+    }
+}

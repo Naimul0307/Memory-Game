@@ -1,0 +1,60 @@
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 30px;
+    }
+
+    form {
+        width: 90%;
+        padding: 20px;
+    }
+
+    input, button {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 24px;
+    }
+
+    form {
+        width: 90%;
+        padding: 15px;
+    }
+
+    input, button {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 360px) {
+    h1 {
+        font-size: 20px;
+    }
+
+    form {
+        width: 90%;
+        padding: 10px;
+    }
+
+    input, button {
+        font-size: 12px;
+    }
+}
+
+/* Portrait Specific (for 1080x1920) */
+@media (max-width: 1080px) and (max-height: 1920px) {
+    body {
+        font-size: 18px;
+    }
+
+    h1 {
+        font-size: 36px;
+    }
+
+    form {
+        width: 70%;
+    }
+}

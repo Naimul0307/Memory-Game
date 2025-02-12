@@ -46,13 +46,10 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 100vh; /* Full height of the screen */
+    height: 100vh; 
 }
 
 .modal-position {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     position: fixed;
     top: 0;
     left: 0;
@@ -61,22 +58,6 @@ body {
     background-color: rgba(0, 0, 0, 0.6);
     animation: fadeIn 0.5s ease-out;
 }
-
-.inner-modal {
-    background-color: #fff;
-    color: #333;
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 500px;
-    text-align: center;
-    animation: slideIn 0.5s ease-out;
-    /* Ensures modal is centered */
-    margin: 0 auto;
-    margin-top: 350px;
-    position: relative; /* Ensures it's within the modal-position container */
-}
-
 
 @keyframes fadeIn {
     0% {
@@ -89,11 +70,28 @@ body {
 
 @keyframes slideIn {
     0% {
-        transform: translateY(-50px);
+        transform: translate(-50%, -60%); /* Start slightly above center */
+        opacity: 0;
     }
     100% {
-        transform: translateY(0);
+        transform: translate(-50%, -50%); /* End exactly at center */
+        opacity: 1;
     }
+}
+
+.inner-modal {
+    background-color: #fff;
+    color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+    animation: slideIn 0.5s ease-out;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 h1 {
