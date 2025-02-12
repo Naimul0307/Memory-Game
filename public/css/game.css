@@ -1,7 +1,12 @@
+@font-face {
+    font-family: 'Font Awesome 6 Free';
+    src: url('/public/fontawesome-free-6.7.2/webfonts/fa-solid-900.woff2') format('woff2'),
+         url('/public/fontawesome-free-6.7.2/webfonts/fa-solid-900.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+  }
+  
 html {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
     box-sizing: border-box;
 }
 
