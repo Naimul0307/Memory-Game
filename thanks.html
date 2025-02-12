@@ -5,8 +5,6 @@
     <meta name="description" content="Thank you for playing!">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <link rel="stylesheet" href="public/css/thanks.css">
     <link rel="stylesheet" href="public/css/thanks-responsive.css">
     <title>Matching Game - Thanks</title>
@@ -78,9 +76,9 @@
                 document.getElementById("modal-win").style.display = "block";
             }
             // Redirect to index.html after 10 seconds
-            // setTimeout(() => {
-            //     window.location.href = "index.html";
-            // }, 10000); // 10,000 milliseconds = 10 seconds
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 10000); // 10,000 milliseconds = 10 seconds
 
         } else {
             console.log("No game data found in localStorage.");

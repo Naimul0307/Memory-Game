@@ -12,6 +12,8 @@ let numMoves = document.querySelector(".numMoves");
 let gameTime = document.querySelector(".gameTime");
 let finalRating = document.querySelector(".finalRating");
 const userName = localStorage.getItem('fileName');
+let cards = []; // ✅ Declare `cards` as a global empty array
+
 document.addEventListener('DOMContentLoaded', function () {
   const userName = localStorage.getItem('fileName');
   if (userName) {
@@ -22,39 +24,40 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Array to store cards classes
-const cards = [
-  "public/images/gift1.jpg",
-  "public/images/gift2.jpg",
-  "public/images/gift3.jpg",
-  "public/images/gift4.jpg",
-  "public/images/gift5.jpg",
-  "public/images/gift6.jpg",
-  "public/images/gift7.jpg",
-  "public/images/gift8.jpg",
-  "public/images/gift1.jpg",
-  "public/images/gift2.jpg",
-  "public/images/gift3.jpg",
-  "public/images/gift4.jpg",
-  "public/images/gift5.jpg",
-  "public/images/gift6.jpg",
-  "public/images/gift7.jpg",
-  "public/images/gift8.jpg",
-];
+function loadCardsFromXML() {
+  fetch("public/xml/gifts.xml")
+    .then(response => response.text())
+    .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+    .then(data => {
+      const cardElements = data.getElementsByTagName("gift");
+      const tempCards = [];
+
+      for (let i = 0; i < cardElements.length; i++) {
+        let imageSrc = cardElements[i].textContent;  // Get the image path directly
+        tempCards.push(imageSrc);
+      }
+
+      // Duplicate cards for matching game
+      cards = [...tempCards, ...tempCards]; // ✅ Now `cards` is properly updated
+
+      // Shuffle cards before displaying them
+      shuffleCards();
+    })
+    .catch(error => console.error("Error loading XML file:", error));
+}
 
 // Shuffle the array of cards
+
 function shuffle(array) {
-  let currentIndex = array.length,
-    temporaryValue,
-    randomIndex;
+  let currentIndex = array.length, temporaryValue, randomIndex;
 
   while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
   }
-
   return array;
 }
 
@@ -101,7 +104,7 @@ function startCountdown() {
 
 // Start game when page loads
 window.onload = function () {
-  shuffleCards();
+  loadCardsFromXML(); // Load and shuffle cards dynamically
 };
 
 /*** GAMEPLAY function ***/
