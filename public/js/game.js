@@ -13,6 +13,12 @@ let gameTime = document.querySelector(".gameTime");
 let finalRating = document.querySelector(".finalRating");
 const userName = localStorage.getItem('fileName');
 let cards = []; // ✅ Declare `cards` as a global empty array
+// Create audio objects for match and no match
+let matchAudio = new Audio('public/audio/match-audio.mp3');  // Replace with your match audio file
+let noMatchAudio = new Audio('public/audio/no-match-audio.mp3');  // Replace with your no match audio file
+let shuffleAudio = new Audio('public/audio/flipcard.mp3'); 
+let flipAudio = new Audio('public/audio/flipcard.mp3');
+
 
 document.addEventListener('DOMContentLoaded', function () {
   const userName = localStorage.getItem('fileName');
@@ -63,7 +69,9 @@ function shuffle(array) {
 
 function shuffleCards() {
   let shuffledCards = shuffle(cards);
-  
+
+  shuffleAudio.play(); // Play the audio
+
   // Reset the deck
   deck.innerHTML = "";
 
@@ -87,7 +95,7 @@ function shuffleCards() {
   // After 5 seconds, flip them back and then start the countdown
   setTimeout(function () {
     allCards.forEach(card => card.classList.remove("flip"));
-    
+    shuffleAudio.play();
     // Start the countdown timer AFTER the flip animation
     startCountdown();
   }, 5000);  // Wait for flip animation to finish before starting countdown
@@ -118,6 +126,9 @@ deck.addEventListener("click", function deckClickHandler(e) {
   openCards.push(clickedCard);
   clickedCard.classList.add("flip", "open");
 
+  // Play the flip audio when the card is flipped
+  flipAudio.play();
+
   if (openCards.length === 2) {
     let card1 = openCards[0];
     let card2 = openCards[1];
@@ -132,6 +143,9 @@ deck.addEventListener("click", function deckClickHandler(e) {
 
       openCards = []; // Reset openCards array
 
+      // Play the match audio
+      matchAudio.play();
+
       // Check for win before calling moveCount
       if (matchedCards.length === cards.length) {
         gameWin(); // Call gameWin() when all cards are matched
@@ -145,7 +159,10 @@ deck.addEventListener("click", function deckClickHandler(e) {
         card1.classList.remove("flip", "open");
         card2.classList.remove("flip", "open");
         openCards = [];
-        
+
+        // Play the no match audio
+        noMatchAudio.play();
+
         // Re-enable clicking after animation
         deck.style.pointerEvents = "auto";
       }, 800);
