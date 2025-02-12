@@ -26,6 +26,24 @@ body {
     font-family: 'Righteous', cursive;
 }
 
+/* Media query for portrait background */
+@media (orientation: portrait) {
+    body {
+        background-image: url('path/to/portrait-background.jpg'), linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB, #fff832, #78f100);
+        background-size: cover, 400% 400%;
+        background-position: center, center;
+    }
+}
+
+/* Media query for landscape background */
+@media (orientation: landscape) {
+    body {
+        background-image: url('path/to/landscape-background.jpg'), linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB, #fff832, #78f100);
+        background-size: cover, 400% 400%;
+        background-position: center, center;
+    }
+}
+
 @keyframes Gradient {
     0% {
         background-position: 0% 50%;
