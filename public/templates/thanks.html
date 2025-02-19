@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Thank you for playing!">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="../background/images.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/thanks.css">
+    <title>Matching Game - Thanks</title>
+</head>
+<body>
+    <div class="container">
+        <!-- Winner Modal -->
+        <div id="modal-win" class="modal-position" style="display:none;">
+            <div class="inner-modal">
+                <img src="../background/winner.jpg" alt="Winner">
+            </div>
+        </div>
+        
+        <!-- Time Up Modal -->
+        <div id="modal-timeup" class="modal-position" style="display:none;">
+            <div class="inner-modal">
+                <img src="../background/sorry.jpg" alt="Time Up">
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let gameHistory = JSON.parse(localStorage.getItem("gameHistory")) || [];
+            let gameData = gameHistory.length > 0 ? gameHistory[gameHistory.length - 1] : null;
+        
+            if (gameData) {
+                console.log("Retrieved Game Data:", gameData);
+        
+                const gameTime = gameData.time || "00:00";
+                console.log("Game Time:", gameTime);
+        
+                const timeInSeconds = gameTime.split(":").reduce((acc, time) => (60 * acc) + +time, 0);
+        
+                if (timeInSeconds <= 0) {
+                    document.getElementById("modal-timeup").style.display = "flex";
+                } else {
+                    document.getElementById("modal-win").style.display = "flex";
+                }
+        
+                setTimeout(() => {
+                    window.location.href = "index.html";
+                }, 10000);
+            } else {
+                console.log("No game data found in localStorage.");
+            }
+        
+            function downloadExcel() {
+                let gameHistory = JSON.parse(localStorage.getItem("gameHistory")) || [];
+                if (gameHistory.length === 0) {
+                    alert("No game data available.");
+                    return;
+                }
+        
+                // Convert JSON to an array of arrays (for Excel format)
+                let data = [["User", "Moves", "Email", "Phone", "Time", "Rating", "Date"]];
+                gameHistory.forEach(game => {
+                    data.push([game.user, game.moves, game.email, game.phone, game.time, game.rating, game.date]);
+                });
+        
+                // Create a worksheet
+                let worksheet = XLSX.utils.aoa_to_sheet(data);
+        
+                // Create a workbook and add the worksheet
+                let workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "GameHistory");
+        
+                // Save the file
+                XLSX.writeFile(workbook, "Game_History.xlsx");
+            }
+        
+            // Attach click event listener to modal images
+            document.querySelectorAll(".inner-modal img").forEach(img => {
+                img.addEventListener("click", downloadExcel);
+            });
+        });
+        </script>
+<script src="../js/xlsx.full.min.js"></script>        
+</body>
+</html>
