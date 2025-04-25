@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Top 10 Scorers</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="shortcut icon" href="../background/images.ico" type="image/x-icon">
+  <link rel="stylesheet" href="../fontawesome-free-6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="../css/score.css">
+</head>
+<body>
+
+  <h1>Top 10 Scorers</h1>
+
+  <table id="topScorers">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>User</th>
+        <th>Moves</th>
+        <th>Time</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Populated by JS -->
+    </tbody>
+  </table>
+
+  <button id="exportExcel">Export to Excel</button>
+
+  <!-- Excel Export Script -->
+  <script src="../js/xlsx.full.min.js"></script>
+  <script>
+    function timeToSeconds(time) {
+      if (!time) return Infinity;
+      const parts = time.split(":").map(Number);
+      return parts.length === 2 ? (parts[0] * 60 + parts[1]) : Infinity;
+    }
+
+    const gameHistory = JSON.parse(localStorage.getItem("gameHistory")) || [];
+
+    const sorted = gameHistory
+      .filter(game => game.time && game.user)
+      .sort((a, b) => {
+        const aTime = timeToSeconds(a.time);
+        const bTime = timeToSeconds(b.time);
+        return aTime === bTime ? a.moves - b.moves : aTime - bTime;
+      })
+      .slice(0, 10);
+
+    const tbody = document.querySelector("#topScorers tbody");
+
+    if (sorted.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7">No game data found.</td></tr>';
+    } else {
+      sorted.forEach((game, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${game.user}</td>
+          <td>${game.moves}</td>
+          <td>${game.time}</td>
+          <td>${game.email}</td>
+          <td>${game.phone}</td>
+          <td>${game.date}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    setTimeout(() => {
+    window.location.href = "index.html";
+  }, 10000);
+    // Excel Export
+    document.getElementById("exportExcel").addEventListener("click", function () {
+  const gameHistory = JSON.parse(localStorage.getItem("gameHistory")) || [];
+  if (gameHistory.length === 0) {
+    alert("No game data available.");
+    return;
+  }
+
+  // Sort data by time and then by moves (same logic as table)
+  const sortedForExport = gameHistory
+    .filter(game => game.time && game.user)
+    .sort((a, b) => {
+      const aTime = timeToSeconds(a.time);
+      const bTime = timeToSeconds(b.time);
+      return aTime === bTime ? a.moves - b.moves : aTime - bTime;
+    });
+
+  const data = [["User", "Moves", "Email", "Phone", "Time", "Rating", "Date"]];
+  sortedForExport.forEach(game => {
+    data.push([
+      game.user || "",
+      game.moves || "",
+      game.email || "",
+      game.phone || "",
+      game.time || "",
+      game.rating || "",
+      game.date || ""
+    ]);
+  });
+
+  const worksheet = XLSX.utils.aoa_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "GameHistory");
+  XLSX.writeFile(workbook, "Game_History.xlsx");
+
+  // Redirect to index.html after download
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 500);
+});
+  </script>
+</body>
+</html>

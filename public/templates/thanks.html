@@ -45,42 +45,41 @@
                 }
         
                 setTimeout(() => {
-                    window.location.href = "index.html";
-                }, 10000);
+                    window.location.href = "score.html";
+                }, 500);
             } else {
                 console.log("No game data found in localStorage.");
             }
+            // function downloadExcel() {
+            //     let gameHistory = JSON.parse(localStorage.getItem("gameHistory")) || [];
+            //     if (gameHistory.length === 0) {
+            //         alert("No game data available.");
+            //         return;
+            //     }
         
-            function downloadExcel() {
-                let gameHistory = JSON.parse(localStorage.getItem("gameHistory")) || [];
-                if (gameHistory.length === 0) {
-                    alert("No game data available.");
-                    return;
-                }
+            //     // Convert JSON to an array of arrays (for Excel format)
+            //     let data = [["User", "Moves", "Email", "Phone", "Time", "Rating", "Date"]];
+            //     gameHistory.forEach(game => {
+            //         data.push([game.user, game.moves, game.email, game.phone, game.time, game.rating, game.date]);
+            //     });
         
-                // Convert JSON to an array of arrays (for Excel format)
-                let data = [["User", "Moves", "Email", "Phone", "Time", "Rating", "Date"]];
-                gameHistory.forEach(game => {
-                    data.push([game.user, game.moves, game.email, game.phone, game.time, game.rating, game.date]);
-                });
+            //     // Create a worksheet
+            //     let worksheet = XLSX.utils.aoa_to_sheet(data);
         
-                // Create a worksheet
-                let worksheet = XLSX.utils.aoa_to_sheet(data);
+            //     // Create a workbook and add the worksheet
+            //     let workbook = XLSX.utils.book_new();
+            //     XLSX.utils.book_append_sheet(workbook, worksheet, "GameHistory");
         
-                // Create a workbook and add the worksheet
-                let workbook = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(workbook, worksheet, "GameHistory");
+            //     // Save the file
+            //     XLSX.writeFile(workbook, "Game_History.xlsx");
+            // }
         
-                // Save the file
-                XLSX.writeFile(workbook, "Game_History.xlsx");
-            }
-        
-            // Attach click event listener to modal images
-            document.querySelectorAll(".inner-modal img").forEach(img => {
-                img.addEventListener("click", downloadExcel);
-            });
+            // // Attach click event listener to modal images
+            // document.querySelectorAll(".inner-modal img").forEach(img => {
+            //     img.addEventListener("click", downloadExcel);
+            // });
         });
         </script>
-<script src="../js/xlsx.full.min.js"></script>        
+     
 </body>
 </html>

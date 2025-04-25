@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gifts>
-    <gift>public/images/gift1.jpg</gift>
-    <gift>public/images/gift2.jpg</gift>
-    <gift>public/images/gift3.jpg</gift>
-    <gift>public/images/gift4.jpg</gift>
-    <gift>public/images/gift5.jpg</gift>
-    <gift>public/images/gift6.jpg</gift>
-    <gift>public/images/gift7.jpg</gift>
-    <gift>public/images/gift8.jpg</gift>
+    <gift>../images/1.png</gift>
+    <gift>../images/2.png</gift>
+    <gift>../images/3.png</gift>
+    <gift>../images/4.png</gift>
+    <gift>../images/5.png</gift>
+    <gift>../images/6.png</gift>
+    <gift>../images/7.png</gift>
+    <gift>../images/8.png</gift>
 </gifts>

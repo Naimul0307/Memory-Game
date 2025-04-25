@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Thank you for playing!">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="../background/images.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/form.css">
+    <link rel="stylesheet" href="../css/form-responsive.css">
+    <title>Form Page</title>
+</head>
+<body>
+    <div class="content">
+        <form id="fileForm">
+            <label for="user-name">Name: </label>
+            <input type="text" id="fileName" placeholder="Enter Your Name" autofocus>
+            
+            <label for="email">Email: </label>
+            <input type="email" id="email" placeholder="Enter Your Email" autofocus>
+            
+            <label for="phone">Phone: </label>
+            <input type="text" id="phone" placeholder="Enter Phone Number" autofocus>
+            <button type="submit">Start Game</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('fileForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get the file name from input
+            const fileName = document.getElementById('fileName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            // Save the file name to localStorage
+            localStorage.setItem('fileName', fileName);
+            localStorage.setItem('email', email);
+            localStorage.setItem('phone', phone);
+            console.log(localStorage.getItem('email'));
+            console.log(localStorage.getItem('fileName'));
+            console.log(localStorage.getItem('phone'));
+            // Redirect to game.html
+            window.location.href = 'game.html';
+        });
+    </script>
+</body>
+</html>

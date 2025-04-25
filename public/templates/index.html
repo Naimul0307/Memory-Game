@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Thank you for playing!">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="../background/images.ico" type="image/x-icon">
+    <title>Home</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/index-responsive.css">
+</head>
+<body>
+    <!-- <button class="redirect-btn" onclick="window.location.href='from.html'" hidden>Touch Hear</button> -->
+     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        document.body.addEventListener("click", function () {
+            window.location.href = "from.html"; // Redirect on background click
+        });
+    });
+     </script>
+</body>
+</html>

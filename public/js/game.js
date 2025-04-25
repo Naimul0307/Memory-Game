@@ -12,12 +12,15 @@ let numMoves = document.querySelector(".numMoves");
 let gameTime = document.querySelector(".gameTime");
 let finalRating = document.querySelector(".finalRating");
 const userName = localStorage.getItem('fileName');
+const email = localStorage.getItem('email');
+const phone = localStorage.getItem('phone');
+
 let cards = []; // ✅ Declare `cards` as a global empty array
 // Create audio objects for match and no match
-let matchAudio = new Audio('public/audio/match-audio.mp3');  // Replace with your match audio file
-let noMatchAudio = new Audio('public/audio/no-match-audio.mp3');  // Replace with your no match audio file
-let shuffleAudio = new Audio('public/audio/flipcard.mp3'); 
-let flipAudio = new Audio('public/audio/flipcard.mp3');
+let matchAudio = new Audio('../audio/match-audio.mp3');  // Replace with your match audio file
+let noMatchAudio = new Audio('../audio/no-match-audio.mp3');  // Replace with your no match audio file
+let shuffleAudio = new Audio('../audio/flipcard.mp3'); 
+let flipAudio = new Audio('../audio/flipcard.mp3');
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -31,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Array to store cards classes
 function loadCardsFromXML() {
-  fetch("public/xml/gifts.xml")
+  fetch("../xml/gifts.xml")
     .then(response => response.text())
     .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
     .then(data => {
@@ -254,7 +257,9 @@ function gameWin() {
 
     // Save the game win data
     const userName = localStorage.getItem('fileName') || 'Guest';
-    saveGameData(userName, moves, formattedTime, rating);
+    const email = localStorage.getItem('email') || '';
+    const phone = localStorage.getItem('phone') || '';
+    saveGameData(userName,email,phone, moves, formattedTime, rating);
 
     // Redirect to the thanks.html page after saving game data
     window.location.href = "thanks.html"; // This line redirects to thanks.html
@@ -272,6 +277,8 @@ function gameOver() {
 
   // Get user data
   const userName = localStorage.getItem('fileName') || 'Guest';
+  const email = localStorage.getItem('email') || '';
+  const phone = localStorage.getItem('phone') || '';
 
   // Default values
   const defaultTime = "00:00";
@@ -284,6 +291,8 @@ function gameOver() {
   // Append new game-over data
   gameHistory.push({
     user: userName,
+    email: email,
+    phone: phone,
     moves: movesValue,
     time: defaultTime,
     rating: defaultRating,
@@ -297,21 +306,19 @@ function gameOver() {
    window.location.href = "thanks.html"; // This line redirects to thanks.html
 }
 
-// Function to save game data in localStorage
-function saveGameData(user, moves, displayedTime, ratingStars) {
-  // Retrieve existing data or initialize an empty array
+function saveGameData(user, email, phone, moves, displayedTime, ratingStars) {
   let gameHistory = JSON.parse(localStorage.getItem("gameHistory")) || [];
 
-  // Append new game data
   gameHistory.push({
     user: user,
+    email: email,
+    phone: phone,
     moves: moves,
     time: displayedTime,
     rating: ratingStars,
-    date: new Date().toLocaleString() // Save date & time of the game
+    date: new Date().toLocaleString()
   });
 
-  // Save back to localStorage
   localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
 }
 
