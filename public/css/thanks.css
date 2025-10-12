@@ -1,134 +1,100 @@
-html {
+@font-face {
+    font-family: 'Font Awesome 6 Free';
+    src: url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.woff2') format('woff2'),
+         url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+  }
+  
+  html {
     box-sizing: border-box;
-}
-
-*,
-*::before,
-*::after {
-    box-sizing: inherit;
-}
-
-html,
-body {
-    width: 100%;
     height: 100%;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+  
+  html,
+  body {
     margin: 0;
     padding: 0;
-}
-
-body {
-    color: #fff;
-    background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB, #fff832, #78f100);
-    background-size: 400% 400%;
-    -webkit-animation: Gradient 15s ease infinite;
-    -moz-animation: Gradient 15s ease infinite;
-    animation: Gradient 15s ease infinite;
+    width: 100%;
+    min-height: 100vh;
     font-family: 'Righteous', cursive;
-}
-
-/* Media query for portrait background */
-@media (orientation: portrait) {
-    body {
-        background-image: url('path/to/portrait-background.jpg'), linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB, #fff832, #78f100);
-        background-size: cover, 400% 400%;
-        background-position: center, center;
-    }
-}
-
-/* Media query for landscape background */
-@media (orientation: landscape) {
-    body {
-        background-image: url('path/to/landscape-background.jpg'), linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB, #fff832, #78f100);
-        background-size: cover, 400% 400%;
-        background-position: center, center;
-    }
-}
-
-@keyframes Gradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
+    color: #fff;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Default fallback background (optional) */
+  body {
+    background: #000;
+  }
+  
+  
+/*** HEADER ***/
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 100vh; 
+    margin-top: 150px; 
+    overflow: hidden;
 }
-
+/* Modal overlay */
 .modal-position {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    animation: fadeIn 0.5s ease-out;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
 }
 
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@keyframes slideIn {
-    0% {
-        transform: translate(-50%, -60%); /* Start slightly above center */
-        opacity: 0;
-    }
-    100% {
-        transform: translate(-50%, -50%); /* End exactly at center */
-        opacity: 1;
-    }
-}
-
+/* Modal inner content fills screen */
 .inner-modal {
-    background-color: #fff;
-    color: #333;
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 600px;
-    text-align: center;
-    animation: slideIn 0.5s ease-out;
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-h1 {
-    font-family: 'Righteous', cursive;
-    font-weight: 300;
-    font-size: 40px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    animation: glow 3s infinite;
+  /* Portrait background */
+  @media (orientation: portrait) {
+    .winner-modal .inner-modal {
+        background-image: url('../background/winnerp.jpg');
+        background-size: cover;
+    }
+  }
+  
+/* Winner modal background (landscape) */
+@media (orientation: landscape) {
+    .winner-modal .inner-modal {
+        background-image: url('../background/winnerp.jpg');
+        background-size: cover;
+    }
+}
+/* Time up modal background (landscape) */
+@media (orientation: landscape) {
+    .timeup-modal .inner-modal {
+        background-image: url('../background/sorry.jpg');
+        background-size: cover;
+    }
 }
 
-@keyframes glow {
-    0% {
-        text-shadow: 0 0 10px white;
+  /* Portrait background */
+  @media (orientation: portrait) {
+    .timeup-modal .inner-modal {
+        background-image: url('../background/sorrypjpg.jpg');
+        background-size: cover;
     }
-    15% {
-        text-shadow: 2px 2px 10px rgba(255, 255, 255, 1), -2px -2px 10px rgba(255, 255, 255, 1);
-    }
-    30% {
-        text-shadow: 2px 2px 4px rgba(255, 255, 255, .7), -2px -2px 4px rgba(255, 255, 255, .7);
-    }
-    50% {
-        text-shadow: 20px 20px 50px rgba(255, 255, 255, .5), -20px -20px 50px rgba(255, 255, 255, .5);
-    }
-}
+  }
+  

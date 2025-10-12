@@ -1,0 +1,123 @@
+@font-face {
+  font-family: 'Font Awesome 6 Free';
+  src: url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.woff2') format('woff2'),
+       url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'Righteous', cursive;
+  color: #fff;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center;     /* Center vertically */
+  flex-direction: column;
+  background: #000; /* fallback */
+}
+
+/* Portrait background */
+@media (orientation: portrait) {
+  body {
+    background: url('../background/backgroundp.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+}
+
+/* Landscape background */
+@media (orientation: landscape) {
+  body {
+    background: url('../background/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+}
+
+h1 {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 30px;
+  color: #ffeb3b;
+  text-shadow: 2px 2px 8px #000;
+}
+
+/* Table Container */
+#topScorers {
+  width: 80%;
+  max-width: 1000px;
+  border-collapse: collapse;
+  background: rgba(0, 0, 0, 0.7); /* semi-transparent background */
+  box-shadow: 0 0 20px rgba(0,0,0,0.8);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Table Header */
+#topScorers th {
+  background-color: #121ed3;
+  color: #fff;
+  font-size: 1.1rem;
+  padding: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Table Body */
+#topScorers td {
+  padding: 12px;
+  border-bottom: 1px solid #333;
+  text-align: center;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+#topScorers tr:hover td {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.02);
+}
+
+/* Button styling */
+#goHome {
+  margin-top: 30px;
+  padding: 12px 25px;
+  font-size: 1.2rem;
+  background: #ffeb3b;
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+#goHome:hover {
+  background: #fdd835;
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+  #topScorers {
+    width: 95%;
+  }
+
+  #topScorers th, #topScorers td {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  #goHome {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+}
