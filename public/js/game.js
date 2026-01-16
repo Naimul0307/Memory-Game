@@ -1,101 +1,115 @@
-/* GLOBAL VARIABLES */
+const { ipcRenderer } = require("electron");
+
+let moves = 0;
+let interval = null;
+let timeLimit = 60;
+let countdownTime = timeLimit;
+
+const userName = localStorage.getItem("fileName") || "Guest";
+const email = localStorage.getItem("email") || "";
+const phone = localStorage.getItem("phone") || "";
+
 const deck = document.getElementById("deck");
 const stars = document.querySelector(".stars");
 const elTimer = document.querySelector(".timer");
-let moves = 0;
-let interval = null;
-let timeLimit = 60; // Countdown timer in seconds
-let countdownTime = timeLimit;
+
+document.getElementById("userName").textContent = userName;
+
+// AUDIO
+const matchAudio = new Audio("../audio/match-audio.mp3");
+const noMatchAudio = new Audio("../audio/no-match-audio.mp3");
+const flipAudio = new Audio("../audio/flipcard.mp3");
+const shuffleAudio = new Audio("../audio/flipcard.mp3");
+
+// CARDS
 let cards = [];
 let openCards = [];
 let matchedCards = [];
 
-// Audio
-const matchAudio = new Audio('../audio/match-audio.mp3');
-const noMatchAudio = new Audio('../audio/no-match-audio.mp3');
-const shuffleAudio = new Audio('../audio/flipcard.mp3');
-const flipAudio = new Audio('../audio/flipcard.mp3');
-
-// Display username and best score
-document.addEventListener('DOMContentLoaded', () => {
-  const userNameSpan = document.getElementById('userName');
-  userNameSpan.textContent = localStorage.getItem('fileName') || 'Guest';
-
-  displayBestScore();
-});
-
-// Load cards from XML
 function loadCardsFromXML() {
   fetch("../xml/gifts.xml")
-    .then(res => res.text())
-    .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
-    .then(data => {
-      const tempCards = [...data.getElementsByTagName("gift")].map(g => g.textContent);
-      cards = [...tempCards, ...tempCards]; // Duplicate for matching
+    .then((res) => res.text())
+    .then((str) => new DOMParser().parseFromString(str, "text/xml"))
+    .then((data) => {
+      const gifts = data.getElementsByTagName("gift");
+      let tempCards = [];
+      for (let i = 0; i < gifts.length; i++) tempCards.push(gifts[i].textContent);
+      cards = [...tempCards, ...tempCards];
       shuffleCards();
     })
-    .catch(err => console.error("Error loading XML:", err));
+    .catch(console.error);
 }
 
-// Shuffle function
 function shuffle(array) {
-  let currentIndex = array.length, temporaryValue, randomIndex;
+  let currentIndex = array.length;
   while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
+    let randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
   }
   return array;
 }
 
-// Display shuffled cards
 function shuffleCards() {
-  const shuffled = shuffle(cards);
+  let shuffled = shuffle(cards);
   deck.innerHTML = "";
-  shuffled.forEach(val => {
-    deck.innerHTML += `
-      <li class="card">
+  shuffled.forEach(
+    (val) =>
+      (deck.innerHTML += `<li class="card">
         <div class="card-inner">
           <div class="card-front"></div>
           <div class="card-back">
             <img src="${val}" class="card-image">
           </div>
         </div>
-      </li>
-    `;
-  });
+      </li>`)
+  );
 
-  const allCards = document.querySelectorAll(".card");
-  allCards.forEach(c => c.classList.add("flip"));
+  let allCards = document.querySelectorAll(".card");
+  allCards.forEach((c) => c.classList.add("flip"));
+
   setTimeout(() => {
-    allCards.forEach(c => c.classList.remove("flip"));
-    shuffleAudio.play();
+    allCards.forEach((c) => c.classList.remove("flip"));
     startCountdown();
+    shuffleAudio.play();
   }, 5000);
 }
 
-// Countdown
 function startCountdown() {
   if (!interval) interval = setInterval(timer, 1000);
 }
+
 function timer() {
   countdownTime--;
-  if (countdownTime <= 0) {
-    clearInterval(interval);
-    interval = null;
-    gameOver();
-  }
-  const minutes = String(Math.floor(countdownTime / 60)).padStart(2, "0");
-  const seconds = String(countdownTime % 60).padStart(2, "0");
-  elTimer.textContent = `${minutes}:${seconds}`;
+  if (countdownTime < 0) return gameOver();
+
+  let minutes = Math.floor(countdownTime / 60).toString().padStart(2, "0");
+  let seconds = (countdownTime % 60).toString().padStart(2, "0");
+  elTimer.textContent = `Timer:${minutes}:${seconds}`;
 }
 
-// Card click handling
-deck.addEventListener("click", e => {
-  const clickedCard = e.target.closest(".card");
-  if (!clickedCard || clickedCard.classList.contains("open") || clickedCard.classList.contains("match") || openCards.length >= 2) return;
+function moveCount() {
+  moves++;
+  document.querySelector(".moves").textContent = `Moves:${moves}`;
+  starRating();
+}
+
+function starRating() {
+  let rating = 3;
+  if (moves >= 25) rating = 1;
+  else if (moves >= 15) rating = 2;
+
+  [...stars.children].forEach((li, idx) => {
+    li.children[0].className = idx < rating ? "fa fa-star" : "far fa-star";
+  });
+
+  return "★".repeat(rating) + "☆".repeat(3 - rating);
+}
+
+deck.addEventListener("click", async function (e) {
+  let clickedCard = e.target.closest(".card");
+  if (!clickedCard || clickedCard.classList.contains("open") || clickedCard.classList.contains("match") || openCards.length >= 2)
+    return;
 
   openCards.push(clickedCard);
   clickedCard.classList.add("flip", "open");
@@ -103,7 +117,7 @@ deck.addEventListener("click", e => {
 
   if (openCards.length === 2) {
     deck.style.pointerEvents = "none";
-    const [card1, card2] = openCards;
+    let [card1, card2] = openCards;
 
     if (card1.querySelector("img").src === card2.querySelector("img").src) {
       matchedCards.push(card1, card2);
@@ -111,7 +125,8 @@ deck.addEventListener("click", e => {
       card2.classList.add("match");
       matchAudio.play();
       openCards = [];
-      if (matchedCards.length === cards.length) gameWin();
+
+      if (matchedCards.length === cards.length) await gameWin();
       deck.style.pointerEvents = "auto";
     } else {
       setTimeout(() => {
@@ -123,81 +138,64 @@ deck.addEventListener("click", e => {
       }, 800);
     }
 
-    moves++;
-    document.querySelector(".moves").textContent = `Moves: ${moves}`;
-    updateStars();
+    moveCount();
   }
 });
 
-// Stars
-function updateStars() {
-  let rating = 3;
-  if (moves >= 25) rating = 1;
-  else if (moves >= 15) rating = 2;
+// SAVE DATA
+async function saveGameData(user, email, phone, moves, time, rating) {
+  await ipcRenderer.invoke("save-excel", { name: user, email, phone, moves, time, rating, date: new Date().toLocaleString() });
 
-  for (let i = 0; i < stars.children.length; i++) {
-    const star = stars.children[i].children[0];
-    if (i < rating) star.classList.replace("far", "fa");
-    else star.classList.replace("fa", "far");
-  }
+  let history = JSON.parse(localStorage.getItem("gameHistory")) || [];
+  history.push({ user, email, phone, moves, time, rating, date: new Date().toLocaleString() });
+  localStorage.setItem("gameHistory", JSON.stringify(history));
 }
 
-// Game win
-function gameWin() {
+// GAME WIN
+async function gameWin() {
   clearInterval(interval);
-  interval = null;
+  let timeTaken = timeLimit - countdownTime;
+  let formattedTime = `${Math.floor(timeTaken / 60).toString().padStart(2,"0")}:${(timeTaken % 60).toString().padStart(2,"0")}`;
+  let rating = starRating();
 
-  const timeTaken = timeLimit - countdownTime;
-  const formattedTime = `${String(Math.floor(timeTaken/60)).padStart(2,"0")}:${String(timeTaken%60).padStart(2,"0")}`;
-  const ratingStars = stars.children.length - stars.querySelectorAll(".far").length;
-
-  const userName = localStorage.getItem('fileName') || 'Guest';
-  const email = localStorage.getItem('email') || '';
-  const phone = localStorage.getItem('phone') || '';
-
-  const gameData = { user: userName, email, phone, moves, time: formattedTime, rating: ratingStars };
-
-  if (window.electronAPI && window.electronAPI.saveGameToExcel) {
-    window.electronAPI.saveGameToExcel(gameData); // ✅ Save all games including duplicates
-  }
-
-  setTimeout(() => window.location.href = "thanks.html", 500);
+  await saveGameData(userName, email, phone, moves, formattedTime, rating);
+  window.location.href = "thanks.html";
 }
 
-// Game over
-function gameOver() {
+// GAME OVER
+async function gameOver() {
   clearInterval(interval);
-  interval = null;
   countdownTime = 0;
-  elTimer.textContent = "00:00";
-  setTimeout(() => window.location.href = "thanks.html", 500);
+  elTimer.textContent = "Timer:00:00";
+
+  await saveGameData(userName, email, phone, moves, "00:00", "null");
+  window.location.href = "thanks.html";
 }
 
-// Display best score from Excel
-function displayBestScore() {
-  if (window.electronAPI && window.electronAPI.getBestScore) {
-    const best = window.electronAPI.getBestScore();
-    if (best) {
-      document.getElementById("bestScore").innerHTML = `
-        <strong>Best Score:</strong> ${best.user} | Time: ${best.time} | Moves: ${best.moves}
-      `;
-    } else {
-      document.getElementById("bestScore").textContent = "No high scores yet!";
-    }
+// BEST SCORE
+function getHighestScore() {
+  let history = JSON.parse(localStorage.getItem("gameHistory")) || [];
+  history = history.filter((g) => g.time !== "00:00");
+  if (!history.length) return null;
+
+  history.sort((a, b) => {
+    let [aMin, aSec] = a.time.split(":").map(Number);
+    let [bMin, bSec] = b.time.split(":").map(Number);
+    let aTotal = aMin * 60 + aSec;
+    let bTotal = bMin * 60 + bSec;
+    if (aTotal === bTotal) return a.moves - b.moves;
+    return aTotal - bTotal;
+  });
+  return history[0];
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadCardsFromXML();
+  const best = getHighestScore();
+  const el = document.getElementById("bestScore");
+  if (best) {
+    el.innerHTML = `<strong>Best Score:</strong> ${best.user} &nbsp;&nbsp; <strong>Time:</strong> ${best.time}`;
   } else {
-    document.getElementById("bestScore").textContent = "No high scores yet!";
+    el.textContent = "No high scores yet!";
   }
-}
-
-// Reset game
-function resetGame() {
-  matchedCards = [];
-  openCards = [];
-  moves = 0;
-  countdownTime = timeLimit;
-  elTimer.textContent = `${Math.floor(countdownTime/60)}:00`;
-  shuffleCards();
-}
-
-// Start game
-window.onload = () => loadCardsFromXML();
+});

@@ -78,7 +78,7 @@
 /* Winner modal background (landscape) */
 @media (orientation: landscape) {
     .winner-modal .inner-modal {
-        background-image: url('../background/winnerp.jpg');
+        background-image: url('../background/winner.jpg');
         background-size: cover;
     }
 }
@@ -93,7 +93,7 @@
   /* Portrait background */
   @media (orientation: portrait) {
     .timeup-modal .inner-modal {
-        background-image: url('../background/sorrypjpg.jpg');
+        background-image: url('../background/sorry.jpg');
         background-size: cover;
     }
   }

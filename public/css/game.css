@@ -70,15 +70,15 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    margin-top: 80px;
+    margin-top: 50PX;
 }
 
 .card {
-    height: 250px;
+    height: 200px;
     width: 400px;
+    padding: 5px;
     font-size: 0;
     color: #ffffff;
-    border-radius: 12px;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -124,8 +124,9 @@
 
 /*** GRID SYSTEM ***/
 .grid {
+    margin: 0 auto;
     width: 90%;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .row {
@@ -150,7 +151,7 @@
     font-size: 30px; /* Slightly larger font */
     overflow: visible;
     font-weight: bolder;
-    color: #0f43eb;
+    color: #ffffff;
 }
 
 .score-panel .stars li {
@@ -159,7 +160,7 @@
 }
 
 #bestScore {
-    color: #0f43eb;
+    color: #ffffff;
 }
 
 .moves {
@@ -176,5 +177,5 @@
     font-size: 30px;
     font-weight: bolder;
     padding-right: 10px;
-    color: #0f43eb;
+    color: #ffffff;
 }

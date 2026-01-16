@@ -24,7 +24,7 @@
     width: 100%;
     height: 100%;
     font-family: 'Righteous', cursive;
-    color: #190397;
+    color: #fff;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
@@ -69,29 +69,34 @@ form {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 400px; /* Make the form bigger */
+    width: 700px; /* Make the form bigger */
     padding: 30px;
-    background-color: rgba(255, 255, 255, 0.8); /* Optional, for better visibility */
+    background-color: rgba(233, 100, 100, 0.363); /* Optional, for better visibility */
     border-radius: 10px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
+label {
+    font-size: 40px; /* Increase font size */
+    margin-bottom: 10px;
+}
+
 input {
-    padding: 15px;
+    padding: 20px;
     margin: 15px 0;
-    font-size: 18px; /* Increase font size */
+    font-size: 40px; /* Increase font size */
     width: 100%; /* Make the inputs fill the width of the form */
     border-radius: 5px;
     border: 1px solid #ccc;
 }
 
 button {
-    padding: 15px 30px;
-    font-size: 18px; /* Increase font size */
-    background-color: #0f43eb;
-    color: white;
+    padding: 20px 40px;
+    font-size: 30px;
+    background-color: #ffffff;
+    color: #490f0f;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
 }
 
