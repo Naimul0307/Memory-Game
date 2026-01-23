@@ -18,6 +18,7 @@ document.getElementById("userName").textContent = userName;
 // AUDIO
 const matchAudio = new Audio("../audio/match-audio.mp3");
 const noMatchAudio = new Audio("../audio/no-match-audio.mp3");
+const beepAudio = new Audio("../audio/beep.mp3");
 const flipAudio = new Audio("../audio/flipcard.mp3");
 const shuffleAudio = new Audio("../audio/flipcard.mp3");
 
@@ -85,8 +86,23 @@ function timer() {
 
   let minutes = Math.floor(countdownTime / 60).toString().padStart(2, "0");
   let seconds = (countdownTime % 60).toString().padStart(2, "0");
-  elTimer.textContent = `Timer:${minutes}:${seconds}`;
+  document.querySelector(".time-text").textContent = `${minutes}:${seconds}`;
+
+  // Animate conic-gradient
+  let percent = (countdownTime / timeLimit) * 360;
+  elTimer.style.background = `conic-gradient(rgba(248, 142, 142, 0.9) 0deg ${percent}deg, rgba(255,255,255,0.2) ${percent}deg 360deg)`;
+
+  // Trigger beep and pulse at 10s or less
+  if (countdownTime <= 10) {
+    if (!elTimer.classList.contains("beep")) {
+      elTimer.classList.add("beep");
+    }
+    beepAudio.play();
+  } else {
+    elTimer.classList.remove("beep");
+  }
 }
+
 
 function moveCount() {
   moves++;

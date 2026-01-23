@@ -1,61 +1,19 @@
-@font-face {
-    font-family: 'Font Awesome 6 Free';
-    src: url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.woff2') format('woff2'),
-         url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.ttf') format('truetype');
-    font-weight: 900;
-    font-style: normal;
-  }
-  
-  html {
-    box-sizing: border-box;
-    height: 100%;
-  }
-  
-  *,
-  *::before,
-  *::after {
-    box-sizing: inherit;
-  }
-  
-  html,
+  /* BACKGROUNDS */
+@media (orientation: portrait) {
   body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    font-family: 'Righteous', cursive;
-    color: #fff;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
+    background: url('../background/portrait.jpg') no-repeat center center fixed;
+    background-size: cover;
   }
-  
-  /* Default fallback background (optional) */
+}
+
+@media (orientation: landscape) {
   body {
-    background: #000;
+    background: url('../background/landscape1.jpg') no-repeat center center fixed;
+    background-size: cover;
   }
-  
-  /* Portrait background */
-  @media (orientation: portrait) {
-    body {
-      background: url('../background/portrait.jpg') no-repeat center center fixed;
-      background-size: cover;
-    }
-  }
-  
-  /* Landscape background */
-  @media (orientation: landscape) {
-    body {
-      background: url('../background/landscape.jpg') no-repeat center center fixed;
-      background-size: cover;
-    }
-  }
-  
+}
   /*** HEADER / CONTENT ***/
   .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
     padding-top: 10vh;
     overflow: hidden;
@@ -214,23 +172,4 @@
   justify-content: center;
   align-items: flex-end;   /* push button down */
   padding-bottom: 140px;  /* distance from score slider */
-}
-
-
-#startBtn {
-  font-size: 36px;
-  padding: 20px 60px;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  color: #fff;
-  background: linear-gradient(135deg, #0f43eb, #3b82f6);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-#startBtn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
 }

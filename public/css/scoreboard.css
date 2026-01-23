@@ -1,33 +1,4 @@
-@font-face {
-  font-family: 'Font Awesome 6 Free';
-  src: url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.woff2') format('woff2'),
-       url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.ttf') format('truetype');
-  font-weight: 900;
-  font-style: normal;
-}
-
-/* RESET */
-* {
-  box-sizing: border-box;
-}
-
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  font-family: 'Righteous', cursive;
-  color: #fff;
-}
-
-/* BACKGROUND */
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #000;
-}
-
-/* ORIENTATION BACKGROUNDS */
+/* BACKGROUNDS */
 @media (orientation: portrait) {
   body {
     background: url('../background/portrait.jpg') no-repeat center center fixed;
@@ -41,23 +12,30 @@ body {
     background-size: cover;
   }
 }
+/* PAGE WRAPPER (CENTERS CONTENT) */
+.scoreboard-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-/* SCOREBOARD CONTAINER */
+/* SCOREBOARD BOX */
 .scoreboard {
-  background: rgba(0, 0, 0, 0.85);
+  background: rgb(248, 111, 111);
   padding: 30px 40px;
   border-radius: 16px;
   width: 90%;
   max-width: 900px;
   text-align: center;
-  box-shadow: 0 0 25px rgba(15, 67, 235, 0.6);
+  box-shadow: 0 0 25px rgba(245, 179, 179, 0.836);
 }
 
 /* TITLE */
 .scoreboard h1 {
   margin-bottom: 20px;
   font-size: 32px;
-  color: #0f43eb;
+  color: #000000;
 }
 
 /* TABLE */
@@ -69,12 +47,12 @@ table {
 
 th, td {
   padding: 12px;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #000000;
 }
 
 th {
-  background: #0f43eb;
-  color: #fff;
+  background: #f58e8e;
+  color: #080808;
   font-size: 18px;
 }
 
@@ -82,38 +60,8 @@ td {
   font-size: 16px;
 }
 
-tr:nth-child(even) {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-/* TOP 3 HIGHLIGHT */
-tr:nth-child(1) td {
-  color: gold;
-  font-weight: bold;
-}
-
-tr:nth-child(2) td {
-  color: silver;
-}
-
-tr:nth-child(3) td {
-  color: #cd7f32;
-}
-
-/* BUTTON */
-#homeBtn {
-  padding: 14px 40px;
-  font-size: 18px;
-  font-weight: bold;
-  background: #0f43eb;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-#homeBtn:hover {
-  background: #0830b8;
-  transform: scale(1.05);
+/* Common table row style */
+tr {
+  background: transparent; /* default background */
+  transition: background 0.3s, color 0.3s;
 }

@@ -1,50 +1,10 @@
-@font-face {
-    font-family: 'Font Awesome 6 Free';
-    src: url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.woff2') format('woff2'),
-         url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.ttf') format('truetype');
-    font-weight: 900;
-    font-style: normal;
-  }
-  
-  html {
-    box-sizing: border-box;
-    height: 100%;
-  }
-  
-  *,
-  *::before,
-  *::after {
-    box-sizing: inherit;
-  }
-  
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100vh;
-    font-family: 'Righteous', cursive;
-    color: #fff;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  /* Default fallback background (optional) */
-  body {
-    background: #000;
-  }
-  
-  
 /*** HEADER ***/
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
     margin-top: 150px; 
     overflow: hidden;
 }
+
 /* Modal overlay */
 .modal-position {
     position: fixed;

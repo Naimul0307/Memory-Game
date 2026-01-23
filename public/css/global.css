@@ -1,0 +1,112 @@
+@font-face {
+  font-family: 'Font Awesome 6 Free';
+  src: url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.woff2') format('woff2'),
+       url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+    font-family: 'AncizarSerif-Italic-VariableFont_wght';
+    src: url('../fonts/AncizarSerif-Italic-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'AncizarSerif-VariableFont_wght';
+    src: url('../fonts/AncizarSerif-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Arima-VariableFont_wght';
+    src: url('../fonts/Arima-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'GaMaamli-Regular';
+    src: url('../fonts/GaMaamli-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+  font-family: 'LibreBodoni-Italic-VariableFont_wght';
+  src: url('/static/fonts/LibreBodoni-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+    font-family: 'LibreBodoni-VariableFont_wght';
+    src: url('../fonts/LibreBodoni-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Wittgenstein-Italic-VariableFont_wght';
+    src: url('../fonts/Wittgenstein-Italic-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Wittgenstein-VariableFont_wght';
+    src: url('../fonts/Wittgenstein-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* RESET */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+   font-family: Arial, sans-serif;
+  color: #fff;
+}
+
+/* BODY LAYOUT */
+body {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* SHARED CONTAINER */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* =====================
+   BASE BUTTON STYLE
+===================== */
+button {
+  padding: 18px 50px;
+  font-size: 24px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #0c0c0c;
+  background: linear-gradient(135deg, #eb9a9a, #f17171);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+}
+
+/* Hover for all buttons */
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+}
+

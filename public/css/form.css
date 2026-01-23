@@ -1,62 +1,19 @@
-@font-face {
-    font-family: 'Font Awesome 6 Free';
-    src: url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.woff2') format('woff2'),
-         url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.ttf') format('truetype');
-    font-weight: 900;
-    font-style: normal;
-  }
-  
-  html {
-    box-sizing: border-box;
-    height: 100%;
-  }
-  
-  *,
-  *::before,
-  *::after {
-    box-sizing: inherit;
-  }
-  
-  html,
+/* BACKGROUNDS */
+@media (orientation: portrait) {
   body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    font-family: 'Righteous', cursive;
-    color: #fff;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
+    background: url('../background/portrait.jpg') no-repeat center center fixed;
+    background-size: cover;
   }
-  
-  /* Default fallback background (optional) */
+}
+
+@media (orientation: landscape) {
   body {
-    background: #000;
+    background: url('../background/landscape.jpg') no-repeat center center fixed;
+    background-size: cover;
   }
-  
-  /* Portrait background */
-  @media (orientation: portrait) {
-    body {
-      background: url('../background/backgroundp.jpg') no-repeat center center fixed;
-      background-size: cover;
-    }
-  }
-  
-  /* Landscape background */
-  @media (orientation: landscape) {
-    body {
-      background: url('../background/background.jpg') no-repeat center center fixed;
-      background-size: cover;
-    }
-  }
-  
+}
 /*** HEADER ***/
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
     height: 100%; 
 }
 
@@ -77,8 +34,9 @@ form {
 }
 
 label {
-    font-size: 40px; /* Increase font size */
+    font-size: 40px; 
     margin-bottom: 10px;
+    color: black;
 }
 
 input {
@@ -90,16 +48,3 @@ input {
     border: 1px solid #ccc;
 }
 
-button {
-    padding: 20px 40px;
-    font-size: 30px;
-    background-color: #ffffff;
-    color: #490f0f;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #597be9;
-}

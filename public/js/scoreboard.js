@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         <td>${s.name}</td>
         <td>${s.time}</td>
         <td>${s.moves}</td>
-        <td>${s.date}</td>
       `;
       tbody.appendChild(row);
     });
