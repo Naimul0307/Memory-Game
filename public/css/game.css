@@ -30,13 +30,13 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    margin-top: 50PX;
+    /* margin-left: 470px; */
 }
 
 .card {
     height: 200px;
     width: 200px;
-    padding: 5px;
+    padding: 10px;
     font-size: 0;
     color: #050505;
     cursor: pointer;
@@ -64,6 +64,8 @@
     position: absolute;
     backface-visibility: hidden;
     border-radius: 12px;
+    background: linear-gradient(135deg, #d8d6d4, #c5bfb3);
+    border: 5px solid #000000;
 }
 
 .card-front {
@@ -105,6 +107,7 @@
     width: 70%;
     margin-left: 222px;
     padding: 5px;
+    margin-top: 40px;
 }
 
 .score-panel .stars {
@@ -141,23 +144,33 @@
     text-align: right;
     padding-left: 10px;
 } */
+
 .timer {
-    position: absolute;
-    top: 60%;
-    right: 200px;
-    transform: translateY(-50%);
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: conic-gradient(rgba(255,0,0,0.5) 0deg, rgba(255,255,255,0.2) 0deg 360deg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 60px;
-    font-weight: bold;
-    color: #fff;
-    box-shadow: 0 0 15px rgba(0,0,0,0.5);
-    backdrop-filter: blur(5px);
+  position: absolute;
+  top: 60%;
+  right: 200px;
+  transform: translateY(-50%);
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+
+  /* CSS variables control the colors */
+  --timer-fill: #e0c7a9;
+  --timer-bg: #c5bfb3;
+
+  background: conic-gradient(
+    var(--timer-fill) 0deg,
+    var(--timer-bg) 360deg
+  );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60px;
+  font-weight: bold;
+  color: #0c0c0c;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  backdrop-filter: blur(5px);
 }
 
 .time-text {

@@ -26,11 +26,12 @@ form {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 700px; /* Make the form bigger */
+    width: 900px; /* Make the form bigger */
     padding: 30px;
-    background-color: rgba(233, 100, 100, 0.363); /* Optional, for better visibility */
+    background: linear-gradient(135deg, #c2bab0, #c5bfb3);
     border-radius: 10px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    /* margin-left: 250px; */
 }
 
 label {

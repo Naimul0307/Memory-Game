@@ -8,7 +8,7 @@
 
 @media (orientation: landscape) {
   body {
-    background: url('../background/landscape.jpg') no-repeat center center fixed;
+    background: url('../background/score.jpg') no-repeat center center fixed;
     background-size: cover;
   }
 }
@@ -22,13 +22,13 @@
 
 /* SCOREBOARD BOX */
 .scoreboard {
-  background: rgb(248, 111, 111);
+  background: linear-gradient(135deg, #c2bab0, #c5bfb3);
   padding: 30px 40px;
   border-radius: 16px;
   width: 90%;
   max-width: 900px;
   text-align: center;
-  box-shadow: 0 0 25px rgba(245, 179, 179, 0.836);
+  box-shadow: 0 0 25px rgba(41, 40, 40, 0.836);
 }
 
 /* TITLE */
@@ -51,13 +51,13 @@ th, td {
 }
 
 th {
-  background: #f58e8e;
+  background: linear-gradient(135deg, #c2bab0, #c5bfb3);
   color: #080808;
   font-size: 18px;
 }
 
 td {
-  font-size: 16px;
+  font-size: 25PX;
 }
 
 /* Common table row style */

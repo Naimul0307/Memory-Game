@@ -88,21 +88,26 @@ function timer() {
   let seconds = (countdownTime % 60).toString().padStart(2, "0");
   document.querySelector(".time-text").textContent = `${minutes}:${seconds}`;
 
-  // Animate conic-gradient
-  let percent = (countdownTime / timeLimit) * 360;
-  elTimer.style.background = `conic-gradient(rgba(248, 142, 142, 0.9) 0deg ${percent}deg, rgba(255,255,255,0.2) ${percent}deg 360deg)`;
+  const styles = getComputedStyle(elTimer);
+  const fillColor = styles.getPropertyValue("--timer-fill").trim();
+  const bgColor = styles.getPropertyValue("--timer-bg").trim();
 
-  // Trigger beep and pulse at 10s or less
+  let degrees = (countdownTime / timeLimit) * 360;
+
+  elTimer.style.background = `
+    conic-gradient(
+      ${fillColor} 0deg ${degrees}deg,
+      ${bgColor} ${degrees}deg 360deg
+    )
+  `;
+
   if (countdownTime <= 10) {
-    if (!elTimer.classList.contains("beep")) {
-      elTimer.classList.add("beep");
-    }
+    elTimer.classList.add("beep");
     beepAudio.play();
   } else {
     elTimer.classList.remove("beep");
   }
 }
-
 
 function moveCount() {
   moves++;
@@ -182,7 +187,7 @@ async function gameWin() {
 async function gameOver() {
   clearInterval(interval);
   countdownTime = 0;
-  elTimer.textContent = "Timer:00:00";
+  elTimer.textContent = "00:00";
 
   await saveGameData(userName, email, phone, moves, "00:00", "null");
   window.location.href = "thanks.html";
