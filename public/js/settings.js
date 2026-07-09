@@ -4,6 +4,12 @@ const settingsList = document.getElementById("settingsList");
 const colorGrid = document.getElementById("colorGrid");
 const bgGrid = document.getElementById("bgGrid");
 const bgUploader = document.getElementById("bgUploader");
+const imgGrid = document.getElementById("imgGrid");
+const imageUploader = document.getElementById("imageUploader");
+const xmlGrid = document.getElementById("xmlGrid");
+const xmlUploader = document.getElementById("xmlUploader");
+const audioGrid = document.getElementById("audioGrid");
+const audioUploader = document.getElementById("audioUploader");
 const saveBtn = document.getElementById("saveBtn");
 const statusEl = document.getElementById("status");
 const fontUploader = document.getElementById("fontUploader");
@@ -12,6 +18,7 @@ const fontGrid = document.getElementById("fontGrid");
 let variablesState = {};
 let currentFonts = [];
 let currentBackgroundSlots = [];
+let currentAudioSlots = [];
 let fontBaseSelectEl = null;
 
 function isHexColor(value = "") {
@@ -30,6 +37,11 @@ function getUniqueFonts(fonts = []) {
   return fonts.filter(
     (font, index, arr) => index === arr.findIndex((f) => f.family === font.family)
   );
+}
+
+function showStatus(message, duration = 4000) {
+  statusEl.textContent = message;
+  setTimeout(() => (statusEl.textContent = ""), duration);
 }
 
 /* =====================
@@ -304,8 +316,231 @@ if (bgUploader) {
     });
 
     if (rejected.length > 0) {
-      statusEl.textContent = `Skipped (name must match an existing slot): ${rejected.join(", ")}`;
-      setTimeout(() => (statusEl.textContent = ""), 4000);
+      showStatus(`Skipped (name must match an existing slot): ${rejected.join(", ")}`);
+    }
+
+    e.target.value = "";
+  });
+}
+
+/* =====================
+   PAGE IMAGES GRID
+   Dynamic list (like fonts) — any filename, multiple images allowed.
+   Uploads go straight into public/images without a fixed slot name.
+===================== */
+
+function renderImageGrid(images) {
+  imgGrid.innerHTML = "";
+
+  if (!images || images.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty-note";
+    empty.textContent = "No page images uploaded yet.";
+    imgGrid.appendChild(empty);
+    return;
+  }
+
+  images.forEach((image) => {
+    const item = document.createElement("div");
+    item.className = "bg-item";
+
+    const thumb = document.createElement("div");
+    thumb.className = "bg-thumb";
+
+    const img = document.createElement("img");
+    img.src = `../images/${image.file}?t=${image.mtime}`;
+    img.alt = image.file;
+    thumb.appendChild(img);
+
+    const fileName = document.createElement("div");
+    fileName.className = "file-name";
+    fileName.textContent = image.file;
+
+    const del = document.createElement("button");
+    del.className = "delete-btn";
+    del.textContent = "Delete";
+    del.addEventListener("click", () => {
+      ipcRenderer.send("delete-image", image.file);
+    });
+
+    item.appendChild(thumb);
+    item.appendChild(fileName);
+    item.appendChild(del);
+
+    imgGrid.appendChild(item);
+  });
+}
+
+if (imageUploader) {
+  imageUploader.addEventListener("change", (e) => {
+    Array.from(e.target.files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        ipcRenderer.send("upload-image", {
+          name: file.name,
+          buffer: reader.result,
+        });
+      };
+      reader.readAsArrayBuffer(file);
+    });
+
+    e.target.value = "";
+  });
+}
+
+/* =====================
+   XML FILES GRID
+   Dynamic list (like fonts) — any filename, multiple files allowed.
+===================== */
+
+function renderXmlGrid(files) {
+  xmlGrid.innerHTML = "";
+
+  if (!files || files.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty-note";
+    empty.textContent = "No XML files uploaded yet.";
+    xmlGrid.appendChild(empty);
+    return;
+  }
+
+  files.forEach((fileName) => {
+    const item = document.createElement("div");
+    item.className = "font-item";
+
+    const preview = document.createElement("div");
+    preview.className = "thumb";
+    preview.textContent = "XML";
+
+    const nameEl = document.createElement("div");
+    nameEl.className = "file-name";
+    nameEl.textContent = fileName;
+
+    const del = document.createElement("button");
+    del.className = "delete-btn";
+    del.textContent = "Delete";
+    del.addEventListener("click", () => {
+      ipcRenderer.send("delete-xml", fileName);
+    });
+
+    item.appendChild(preview);
+    item.appendChild(nameEl);
+    item.appendChild(del);
+
+    xmlGrid.appendChild(item);
+  });
+}
+
+if (xmlUploader) {
+  xmlUploader.addEventListener("change", (e) => {
+    const rejected = [];
+
+    Array.from(e.target.files).forEach((file) => {
+      if (!file.name.toLowerCase().endsWith(".xml")) {
+        rejected.push(file.name);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        ipcRenderer.send("upload-xml", {
+          name: file.name,
+          buffer: reader.result,
+        });
+      };
+      reader.readAsArrayBuffer(file);
+    });
+
+    if (rejected.length > 0) {
+      showStatus(`Skipped (not .xml): ${rejected.join(", ")}`);
+    }
+
+    e.target.value = "";
+  });
+}
+
+/* =====================
+   AUDIO FILES GRID
+   Fixed slots (from main.js AUDIO_SLOTS) — same pattern as
+   backgrounds. Upload happens via the single shared #audioUploader
+   input above the grid — the uploaded file's name must match an
+   existing slot filename exactly; main.js validates this and
+   overwrites that slot in place.
+===================== */
+
+function renderAudioGrid(slots) {
+  currentAudioSlots = Array.isArray(slots) ? slots : [];
+  audioGrid.innerHTML = "";
+
+  if (currentAudioSlots.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty-note";
+    empty.textContent = "No audio slots configured.";
+    audioGrid.appendChild(empty);
+    return;
+  }
+
+  currentAudioSlots.forEach((slot) => {
+    const item = document.createElement("div");
+    item.className = "bg-item";
+
+    const thumb = document.createElement("div");
+    thumb.className = "bg-thumb";
+
+    if (slot.exists) {
+      const audio = document.createElement("audio");
+      audio.controls = true;
+      audio.src = `../audio/${slot.file}?t=${slot.mtime}`;
+      thumb.appendChild(audio);
+    } else {
+      const missing = document.createElement("span");
+      missing.textContent = "No audio";
+      thumb.appendChild(missing);
+    }
+
+    const fileName = document.createElement("div");
+    fileName.className = "file-name";
+    fileName.textContent = slot.file;
+
+    const del = document.createElement("button");
+    del.className = "delete-btn";
+    del.textContent = "Delete";
+    del.disabled = !slot.exists;
+    del.addEventListener("click", () => {
+      ipcRenderer.send("delete-audio", slot.file);
+    });
+
+    item.appendChild(thumb);
+    item.appendChild(fileName);
+    item.appendChild(del);
+
+    audioGrid.appendChild(item);
+  });
+}
+
+if (audioUploader) {
+  audioUploader.addEventListener("change", (e) => {
+    const validNames = currentAudioSlots.map((s) => s.file);
+    const rejected = [];
+
+    Array.from(e.target.files).forEach((file) => {
+      if (!validNames.includes(file.name)) {
+        rejected.push(file.name);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        ipcRenderer.send("upload-audio", {
+          slot: file.name,
+          buffer: reader.result,
+        });
+      };
+      reader.readAsArrayBuffer(file);
+    });
+
+    if (rejected.length > 0) {
+      showStatus(`Skipped (name must match an existing slot): ${rejected.join(", ")}`);
     }
 
     e.target.value = "";
@@ -330,9 +565,20 @@ ipcRenderer.on("backgrounds-list", (event, slots) => {
   renderBackgroundGrid(slots);
 });
 
+ipcRenderer.on("images-list", (event, images) => {
+  renderImageGrid(images);
+});
+
+ipcRenderer.on("xml-list", (event, files) => {
+  renderXmlGrid(files);
+});
+
+ipcRenderer.on("audio-list", (event, slots) => {
+  renderAudioGrid(slots);
+});
+
 ipcRenderer.on("reload-styles", () => {
-  statusEl.textContent = "Saved and applied!";
-  setTimeout(() => (statusEl.textContent = ""), 2000);
+  showStatus("Saved and applied!", 2000);
 });
 
 if (fontUploader) {
@@ -361,3 +607,6 @@ saveBtn.addEventListener("click", () => {
 ipcRenderer.send("get-css-variables");
 ipcRenderer.send("get-fonts");
 ipcRenderer.send("get-backgrounds");
+ipcRenderer.send("get-images");
+ipcRenderer.send("get-xml");
+ipcRenderer.send("get-audio");

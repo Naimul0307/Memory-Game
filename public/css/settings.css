@@ -21,7 +21,7 @@ body {
 
 #settingsPage {
   width: 90%;
-  max-width: 1000px;
+  max-width: 800px;
   max-height: 85vh;
   overflow-y: auto;
   margin: 0 auto;
@@ -97,16 +97,40 @@ hr {
   font-size: 12px;
 }
 
-/* Shared grid system: fonts + colors, fixed 5 per row, smaller cards */
+/* Page image upload input */
+#imageUploader {
+  margin-bottom: 10px;
+  color: var(--color-text-dark);
+  font-size: 12px;
+}
+
+/* XML upload input */
+#xmlUploader {
+  margin-bottom: 10px;
+  color: var(--color-text-dark);
+  font-size: 12px;
+}
+
+/* Audio upload input */
+#audioUploader {
+  margin-bottom: 10px;
+  color: var(--color-text-dark);
+  font-size: 12px;
+}
+
+/* Shared grid system: fonts + colors + xml, fixed 5 per row, smaller cards */
 #fontGrid,
-#colorGrid {
+#colorGrid,
+#xmlGrid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
 }
 
-/* Background slot grid: 3 per row (thumbnails need more room) */
-#bgGrid {
+/* Background / page image / audio grids: 3 per row (thumbnails need more room) */
+#bgGrid,
+#imgGrid,
+#audioGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
@@ -114,10 +138,13 @@ hr {
 
 @media (max-width: 700px) {
   #fontGrid,
-  #colorGrid {
+  #colorGrid,
+  #xmlGrid {
     grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
   }
-  #bgGrid {
+  #bgGrid,
+  #imgGrid,
+  #audioGrid {
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   }
 }
@@ -163,7 +190,7 @@ hr {
   border-radius: 5px !important;
 }
 
-/* Background thumbnail */
+/* Background / page image thumbnail */
 .bg-thumb {
   height: 70px;
   border-radius: 6px;
@@ -181,6 +208,12 @@ hr {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Audio player sits inside the same .bg-thumb box as image thumbnails */
+.bg-thumb audio {
+  width: 100%;
+  height: 32px;
 }
 
 .font-item .file-name,

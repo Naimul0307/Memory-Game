@@ -122,7 +122,7 @@
    Background IMAGES stay in their own page css files.)
 ===================== */
 :root {
-  --font-base: 'GaMaamli-Regular';
+  --font-base: 'LibreBodoni-VariableFont_wght';
   /* shared text colors */
   --color-text-primary: #050505;
   --color-text-dark: #0c0c0c;
@@ -164,7 +164,7 @@
   --settings-input-border: #444444;
   --settings-input-text: #ffffff;
   --settings-card-bg: #ffffff;
-  --settings-thumb-bg: #1c1c1c;
+  --settings-thumb-bg: #848282;
   --settings-filename-color: #ffffff;
   --settings-delete-bg: #7a2f2f;
   --settings-delete-hover-bg: #9a3a3a;

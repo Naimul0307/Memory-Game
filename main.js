@@ -16,6 +16,15 @@ const fontDir = path.join(__dirname, "public", "fonts");
 // Folder where background images live
 const backgroundDir = path.join(__dirname, "public", "background");
 
+// Folder where page images live (dynamic list, any filename)
+const imagesDir = path.join(__dirname, "public", "images");
+
+// Folder where xml files live (dynamic list, any filename)
+const xmlDir = path.join(__dirname, "public", "xml");
+
+// Folder where audio files live (fixed slots, see AUDIO_SLOTS below)
+const audioDir = path.join(__dirname, "public", "audio");
+
 // Fixed set of background image slots used across the app's CSS.
 // Each slot has a FIXED filename — uploads always overwrite the same
 // name/extension so hardcoded CSS url() paths never break.
@@ -33,6 +42,16 @@ const BACKGROUND_SLOTS = [
   "front.png",
   "sorry.jpg",
   "winner.jpg",
+];
+
+// Fixed set of audio slots used by the game logic — same idea as
+// BACKGROUND_SLOTS. Uploads always overwrite the same filename so
+// hardcoded audio paths elsewhere in the app never break.
+const AUDIO_SLOTS = [
+  "beep.mp3",
+  "flipcard.mp3",
+  "no-match-audio.mp3",
+  "match-audio.mp3",
 ];
 
 function ensureDir(dirPath) {
@@ -83,6 +102,9 @@ function createSettingsWindow() {
   settingsWindow.webContents.on("did-finish-load", () => {
     sendFontsToSettings();
     sendBackgroundsToSettings();
+    sendImagesToSettings();
+    sendXmlToSettings();
+    sendAudioToSettings();
   });
 
   settingsWindow.on("closed", () => {
@@ -216,9 +238,7 @@ function sendFontsToSettings() {
     family: getFontFamilyFromFile(file),
   }));
 
-  if (settingsWindow && !settingsWindow.isDestroyed()) {
-    settingsWindow.webContents.send("fonts-list", fonts);
-  }
+  notifyWindows("fonts-list", fonts);
 }
 
 /* =====================
@@ -243,9 +263,78 @@ function getBackgroundSlots() {
 }
 
 function sendBackgroundsToSettings() {
-  if (settingsWindow && !settingsWindow.isDestroyed()) {
-    settingsWindow.webContents.send("backgrounds-list", getBackgroundSlots());
-  }
+  notifyWindows("backgrounds-list", getBackgroundSlots());
+}
+
+/* =====================
+   PAGE IMAGES MACHINERY
+   Dynamic list (like fonts) — any filename allowed, multiple images.
+===================== */
+
+const IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"];
+
+function getImageFiles() {
+  ensureDir(imagesDir);
+
+  return fs
+    .readdirSync(imagesDir)
+    .filter((file) => IMAGE_EXTENSIONS.includes(path.extname(file).toLowerCase()))
+    .sort((a, b) =>
+      a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" })
+    );
+}
+
+function sendImagesToSettings() {
+  const images = getImageFiles().map((file) => {
+    const filePath = path.join(imagesDir, file);
+    return { file, mtime: fs.statSync(filePath).mtimeMs };
+  });
+
+  notifyWindows("images-list", images);
+}
+
+/* =====================
+   XML FILES MACHINERY
+   Dynamic list (like fonts) — any filename allowed, multiple files.
+===================== */
+
+function getXmlFiles() {
+  ensureDir(xmlDir);
+
+  return fs
+    .readdirSync(xmlDir)
+    .filter((file) => path.extname(file).toLowerCase() === ".xml")
+    .sort((a, b) =>
+      a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" })
+    );
+}
+
+function sendXmlToSettings() {
+  notifyWindows("xml-list", getXmlFiles());
+}
+
+/* =====================
+   AUDIO FILES MACHINERY
+   Fixed slots (like backgrounds) — filenames must match AUDIO_SLOTS.
+===================== */
+
+function getAudioSlots() {
+  ensureDir(audioDir);
+
+  return AUDIO_SLOTS.map((file) => {
+    const filePath = path.join(audioDir, file);
+    const exists = fs.existsSync(filePath);
+
+    return {
+      file,
+      exists,
+      mtime: exists ? fs.statSync(filePath).mtimeMs : 0,
+    };
+  });
+}
+
+function sendAudioToSettings() {
+  notifyWindows("audio-list", getAudioSlots());
 }
 
 /* =====================
@@ -284,12 +373,14 @@ ipcMain.on("get-css-variables", (event) => {
 });
 
 // Receive edited variables from the settings window, write them, and
-// tell every open window to refresh its stylesheet
+// push the fresh values to every open window so they apply instantly
+// (no full page reload needed — see public/js/liveTheme.js)
 ipcMain.on("update-settings", (event, data) => {
   if (!data?.variables) return;
 
   updateCssVariables(data.variables);
-  notifyWindows("reload-styles");
+  notifyWindows("css-variables", readCssVariables());
+  notifyWindows("reload-styles"); // kept so the Settings window still shows "Saved and applied!"
 });
 
 // Send the list of uploaded fonts
@@ -381,9 +472,132 @@ ipcMain.on("delete-background", (event, slot) => {
   }
 });
 
+// Send the list of page images
+ipcMain.on("get-images", () => {
+  sendImagesToSettings();
+});
+
+// Save a newly uploaded page image (any filename, multiple allowed)
+ipcMain.on("upload-image", (event, data) => {
+  try {
+    ensureDir(imagesDir);
+    const destPath = path.join(imagesDir, path.basename(data.name));
+    fs.writeFileSync(destPath, Buffer.from(data.buffer));
+
+    notifyWindows("reload-styles");
+    sendImagesToSettings();
+  } catch (error) {
+    console.error("Upload image error:", error);
+  }
+});
+
+// Delete a page image by filename
+ipcMain.on("delete-image", (event, fileName) => {
+  try {
+    const filePath = path.join(imagesDir, path.basename(fileName));
+
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    notifyWindows("reload-styles");
+    sendImagesToSettings();
+  } catch (error) {
+    console.error("Delete image error:", error);
+  }
+});
+
+// Send the list of xml files
+ipcMain.on("get-xml", () => {
+  sendXmlToSettings();
+});
+
+// Save a newly uploaded xml file (any filename, multiple allowed)
+ipcMain.on("upload-xml", (event, data) => {
+  try {
+    ensureDir(xmlDir);
+    const destPath = path.join(xmlDir, path.basename(data.name));
+    fs.writeFileSync(destPath, Buffer.from(data.buffer));
+
+    sendXmlToSettings();
+  } catch (error) {
+    console.error("Upload xml error:", error);
+  }
+});
+
+// Delete an xml file by filename
+ipcMain.on("delete-xml", (event, fileName) => {
+  try {
+    const filePath = path.join(xmlDir, path.basename(fileName));
+
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    sendXmlToSettings();
+  } catch (error) {
+    console.error("Delete xml error:", error);
+  }
+});
+
+// Send the list of audio slots
+ipcMain.on("get-audio", () => {
+  sendAudioToSettings();
+});
+
+// Save a newly uploaded audio file into its fixed slot.
+// Old file (if any) is deleted first, then the new bytes are written
+// under the SAME slot filename — format/name never changes.
+ipcMain.on("upload-audio", (event, { slot, buffer }) => {
+  try {
+    if (!AUDIO_SLOTS.includes(slot)) {
+      console.error("Rejected upload-audio: unknown slot", slot);
+      return;
+    }
+
+    ensureDir(audioDir);
+    const destPath = path.join(audioDir, slot);
+
+    if (fs.existsSync(destPath)) {
+      fs.unlinkSync(destPath);
+    }
+
+    fs.writeFileSync(destPath, Buffer.from(buffer));
+
+    notifyWindows("reload-styles");
+    sendAudioToSettings();
+  } catch (error) {
+    console.error("Upload audio error:", error);
+  }
+});
+
+// Delete an audio slot's current file
+ipcMain.on("delete-audio", (event, slot) => {
+  try {
+    if (!AUDIO_SLOTS.includes(slot)) {
+      console.error("Rejected delete-audio: unknown slot", slot);
+      return;
+    }
+
+    const filePath = path.join(audioDir, slot);
+
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    notifyWindows("reload-styles");
+    sendAudioToSettings();
+  } catch (error) {
+    console.error("Delete audio error:", error);
+  }
+});
+
 app.whenReady().then(() => {
   ensureDir(fontDir);
   ensureDir(backgroundDir);
+  ensureDir(imagesDir);
+  ensureDir(xmlDir);
+  ensureDir(audioDir);
   syncFontFacesToGlobalCss(); // pick up any fonts already sitting in public/fonts
 
   createWindow();
