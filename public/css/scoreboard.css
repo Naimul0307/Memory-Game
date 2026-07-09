@@ -1,14 +1,14 @@
 /* BACKGROUNDS */
 @media (orientation: portrait) {
   body {
-    background: url('../background/portrait.jpg') no-repeat center center fixed;
+    background: url('../background/score-portrait.jpg') no-repeat center center fixed;
     background-size: cover;
   }
 }
 
 @media (orientation: landscape) {
   body {
-    background: url('../background/score.jpg') no-repeat center center fixed;
+    background: url('../background/score-landscap.jpg') no-repeat center center fixed;
     background-size: cover;
   }
 }

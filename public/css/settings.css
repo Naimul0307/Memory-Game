@@ -73,6 +73,7 @@ hr {
 }
 
 .setting-row input[type="text"],
+.setting-row input[type="number"],
 .setting-row select {
   width: 180px;
   padding: 5px 8px;
@@ -82,6 +83,26 @@ hr {
   color: var(--settings-input-text);
   font-size: 12px;
 }
+
+/* Number input polish (Time Limit, etc.) */
+.setting-row input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.setting-row input[type="number"]::-webkit-inner-spin-button,
+.setting-row input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.setting-row input[type="text"]:focus,
+.setting-row input[type="number"]:focus,
+.setting-row select:focus {
+  outline: none;
+  border-color: var(--gradient-start);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--gradient-start) 25%, transparent);
+}
+
 
 /* Font upload input */
 #fontUploader {

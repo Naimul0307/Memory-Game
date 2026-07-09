@@ -5,6 +5,18 @@ let interval = null;
 let timeLimit = 60;
 let countdownTime = timeLimit;
 
+async function loadConfig() {
+  try {
+    const config = await ipcRenderer.invoke("get-config");
+    if (config && Number.isFinite(config.timeLimit) && config.timeLimit > 0) {
+      timeLimit = config.timeLimit;
+      countdownTime = timeLimit;
+    }
+  } catch (err) {
+    console.error("Config load error:", err);
+  }
+}
+
 const userName = localStorage.getItem("fileName") || "Guest";
 const email = localStorage.getItem("email") || "";
 const phone = localStorage.getItem("phone") || "";
@@ -210,8 +222,10 @@ function getHighestScore() {
   return history[0];
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadConfig();
   loadCardsFromXML();
+
   const best = getHighestScore();
   const el = document.getElementById("bestScore");
   if (best) {

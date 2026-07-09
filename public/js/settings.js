@@ -14,12 +14,24 @@ const saveBtn = document.getElementById("saveBtn");
 const statusEl = document.getElementById("status");
 const fontUploader = document.getElementById("fontUploader");
 const fontGrid = document.getElementById("fontGrid");
+const timeLimitInput = document.getElementById("timeLimitInput");
 
 let variablesState = {};
 let currentFonts = [];
 let currentBackgroundSlots = [];
 let currentAudioSlots = [];
 let fontBaseSelectEl = null;
+
+async function loadConfig() {
+  try {
+    const config = await ipcRenderer.invoke("get-config");
+    if (timeLimitInput) timeLimitInput.value = config.timeLimit;
+  } catch (err) {
+    console.error("Config load error:", err);
+  }
+}
+
+loadConfig();
 
 function isHexColor(value = "") {
   return /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(value.trim());
@@ -600,8 +612,17 @@ if (fontUploader) {
   });
 }
 
-saveBtn.addEventListener("click", () => {
+saveBtn.addEventListener("click", async () => {
   ipcRenderer.send("update-settings", { variables: variablesState });
+
+  if (timeLimitInput) {
+    const timeLimit = parseInt(timeLimitInput.value, 10);
+    await ipcRenderer.invoke("update-config", {
+      timeLimit: Number.isFinite(timeLimit) && timeLimit > 0 ? timeLimit : 60,
+    });
+  }
+
+  showStatus("Saved and applied!", 2000);
 });
 
 ipcRenderer.send("get-css-variables");

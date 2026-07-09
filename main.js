@@ -608,6 +608,45 @@ app.whenReady().then(() => {
   });
 });
 
+// Path to a small JSON file for game settings (separate from global.css)
+const configPath = path.join(__dirname, "public", "config.json");
+
+const DEFAULT_CONFIG = {
+  timeLimit: 60,
+};
+
+function readConfig() {
+  if (!fs.existsSync(configPath)) {
+    fs.writeFileSync(configPath, JSON.stringify(DEFAULT_CONFIG, null, 2), "utf8");
+    return { ...DEFAULT_CONFIG };
+  }
+  try {
+    const raw = fs.readFileSync(configPath, "utf8");
+    return { ...DEFAULT_CONFIG, ...JSON.parse(raw) };
+  } catch (err) {
+    console.error("Config read error:", err);
+    return { ...DEFAULT_CONFIG };
+  }
+}
+
+function writeConfig(updatedFields) {
+  const merged = { ...readConfig(), ...updatedFields };
+  fs.writeFileSync(configPath, JSON.stringify(merged, null, 2), "utf8");
+  return merged;
+}
+
+// Send current config (used by both game.js and settings.js)
+ipcMain.handle("get-config", async () => {
+  return readConfig();
+});
+
+// Save updated config fields (merges, doesn't overwrite the whole file)
+ipcMain.handle("update-config", async (_, data) => {
+  const merged = writeConfig(data);
+  notifyWindows("config-updated", merged);
+  return merged;
+});
+
 app.on("will-quit", () => {
   globalShortcut.unregisterAll();
 });
