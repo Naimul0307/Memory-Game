@@ -1,10 +1,68 @@
+/* FONT_FACE_START */
 @font-face {
-  font-family: 'Font Awesome 6 Free';
-  src: url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.woff2') format('woff2'),
-       url('../fontawesome-free-6.7.2/webfonts/fa-solid-900.ttf') format('truetype');
-  font-weight: 900;
+  font-family: 'AncizarSerif-Italic-VariableFont_wght';
+  src: url('../fonts/AncizarSerif-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
+
+@font-face {
+  font-family: 'AncizarSerif-VariableFont_wght';
+  src: url('../fonts/AncizarSerif-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Arima-VariableFont_wght';
+  src: url('../fonts/Arima-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GaMaamli-Regular';
+  src: url('../fonts/GaMaamli-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'LibreBodoni-Italic-VariableFont_wght';
+  src: url('../fonts/LibreBodoni-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'LibreBodoni-VariableFont_wght';
+  src: url('../fonts/LibreBodoni-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Wittgenstein-Italic-VariableFont_wght';
+  src: url('../fonts/Wittgenstein-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Wittgenstein-VariableFont_wght';
+  src: url('../fonts/Wittgenstein-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+/* FONT_FACE_END */
 
 @font-face {
     font-family: 'AncizarSerif-Italic-VariableFont_wght';
@@ -58,6 +116,62 @@
     font-style: normal;
 }
 
+/* =====================
+   ROOT VARIABLES
+   (all reusable text / color / shadow values live here.
+   Background IMAGES stay in their own page css files.)
+===================== */
+:root {
+  --font-base: 'GaMaamli-Regular';
+  /* shared text colors */
+  --color-text-primary: #050505;
+  --color-text-dark: #0c0c0c;
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-accent-blue: #FEFEFF;
+  --border-color: #ccc;
+  --card-color: #ffffff;
+  --topscore-backgourd: rgba(0, 0, 0, 0.8);
+  --topscoer-text-color: #fff;
+  --heading-color: #0f0e0e;
+  --label-color: #000000;
+
+  --gradient-start: #c2bab0;
+  --gradient-end: #c5bfb3;
+
+  --shadow-soft: rgba(0, 0, 0, 0.4);
+  --shadow-strong: rgba(0, 0, 0, 0.6);
+
+  /* game.css colors */
+  --game-card-gradient-start: #d8d6d4;
+  --game-stars-color: #020202;
+  --game-score-color: #030303;
+  --game-subtitle-color: #000000;
+  --game-timer-fill: #e0c7a9;
+  --game-timer-bg: #c5bfb3;
+  --game-timer-shadow: rgba(0, 0, 0, 0.5);
+
+  /* scoreboard.css colors */
+  --scoreboard-th-color: #080808;
+  --scoreboard-shadow: rgba(41, 40, 40, 0.836);
+
+  /* form.css colors */
+  --form-shadow: rgba(0, 0, 0, 0.1);
+
+  /* ===== settings.css colors (moved from settings.css) ===== */
+  --settings-row-border: #333333;
+  --settings-input-bg: #2a2a2a;
+  --settings-input-border: #444444;
+  --settings-input-text: #ffffff;
+  --settings-card-bg: #ffffff;
+  --settings-thumb-bg: #1c1c1c;
+  --settings-filename-color: #ffffff;
+  --settings-delete-bg: #7a2f2f;
+  --settings-delete-hover-bg: #9a3a3a;
+  --settings-empty-color: #888888;
+  --settings-status-color: #5DDC2D;
+}
+
 /* RESET */
 *,
 *::before,
@@ -70,8 +184,8 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-   font-family: Arial, sans-serif;
-  color: #050505;
+  font-family:var(--font-base), sans-serif;
+  color: var(--color-text-primary);
 }
 
 /* BODY LAYOUT */
@@ -81,11 +195,24 @@ body {
   overflow-x: hidden;
 }
 
-/* SHARED CONTAINER */
+/* SHARED CONTAINER (base rules common to every page) */
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* SHARED GRID SYSTEM (identical in index.css / game.css) */
+.row {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col-5 {
+  margin: auto;
 }
 
 /* =====================
@@ -95,18 +222,18 @@ button {
   padding: 18px 50px;
   font-size: 24px;
   font-weight: bold;
+  font-family: var(--font-base);
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  color: #0c0c0c;
-  background: linear-gradient(135deg, #c2bab0, #c5bfb3);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  color: var(--color-text-dark);
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  box-shadow: 0 8px 20px var(--shadow-soft);
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
 }
 
 /* Hover for all buttons */
 button:hover {
   transform: scale(1.05);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+  box-shadow: 0 12px 30px var(--shadow-strong);
 }
-

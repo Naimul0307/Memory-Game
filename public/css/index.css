@@ -1,24 +1,23 @@
-  /* BACKGROUNDS */
+/* BACKGROUNDS */
 @media (orientation: portrait) {
   body {
-    background: url('../background/portrait.jpg') no-repeat center center fixed;
+    background: url('../background/index-portrait.jpg') no-repeat center center fixed;
     background-size: cover;
   }
 }
 
 @media (orientation: landscape) {
   body {
-    background: url('../background/landscape1.jpg') no-repeat center center fixed;
+    background: url('../background/index-landscape.jpg') no-repeat center center fixed;
     background-size: cover;
   }
 }
-  /*** HEADER / CONTENT ***/
-  .container {
-    flex-direction: column;
-    padding-top: 10vh;
-    overflow: hidden;
-  }
-  
+
+/*** HEADER / CONTENT ***/
+/* base flex-direction/overflow now live in global.css .container */
+.container {
+  padding-top: 10vh;
+}
 
 /*** CARD DECK ***/
 .deck {
@@ -36,7 +35,7 @@
     height: 250px;
     width: 400px;
     font-size: 0;
-    color: #ffffff;
+    color: var(--card-color);
     border-radius: 12px;
     cursor: pointer;
     display: flex;
@@ -82,20 +81,11 @@
 }
 
 /*** GRID SYSTEM ***/
+/* .row / .col-5 moved to global.css (identical in index.css and game.css) */
 .grid {
     margin: 0 auto;
     width: 90%;
     margin-top: 20px;
-}
-
-.row {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.col-5 {
-    margin: auto;
 }
 
 /*** SCORE PANEL ***/
@@ -110,7 +100,7 @@
     font-size: 20px;
     overflow: visible;
     font-weight: bolder;
-    color: #0f43eb;
+    color: var(--color-accent-blue);
 }
 
 .score-panel .stars li {
@@ -119,7 +109,7 @@
 }
 
 #bestScore {
-    color: #0f43eb;
+    color: var(--color-accent-blue);
 }
 
 .moves {
@@ -136,7 +126,7 @@
     font-size: 20px;
     font-weight: bolder;
     padding-right: 10px;
-    color: #0f43eb;
+    color: var(--color-accent-blue);
 }
 
 #topScoreTicker {
@@ -144,8 +134,8 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background: rgba(0, 0, 0, 0.8); /* slightly darker for visibility */
-  color: #fff;
+  background:var(--topscore-backgourd); /* slightly darker for visibility */
+  color: var(--topscoer-text-color);
   font-size: 24px;      /* bigger font */
   font-weight: bold;     /* bold text */
   padding: 15px 0;       /* taller ticker */

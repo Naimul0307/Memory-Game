@@ -1,8 +1,7 @@
 /*** HEADER ***/
+/* base flex-direction/overflow now live in global.css .container */
 .container {
-    flex-direction: column;
-    margin-top: 150px; 
-    overflow: hidden;
+    margin-top: 150px;
 }
 
 /* Modal overlay */
@@ -57,4 +56,3 @@
         background-size: cover;
     }
   }
-  

@@ -12,6 +12,7 @@
     background-size: cover;
   }
 }
+
 /* PAGE WRAPPER (CENTERS CONTENT) */
 .scoreboard-wrapper {
   flex: 1;
@@ -22,20 +23,20 @@
 
 /* SCOREBOARD BOX */
 .scoreboard {
-  background: linear-gradient(135deg, #c2bab0, #c5bfb3);
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
   padding: 30px 40px;
   border-radius: 16px;
   width: 90%;
   max-width: 900px;
   text-align: center;
-  box-shadow: 0 0 25px rgba(41, 40, 40, 0.836);
+  box-shadow: 0 0 25px var(--scoreboard-shadow);
 }
 
 /* TITLE */
 .scoreboard h1 {
   margin-bottom: 20px;
   font-size: 32px;
-  color: #000000;
+  color: var(--color-black);
 }
 
 /* TABLE */
@@ -47,17 +48,17 @@ table {
 
 th, td {
   padding: 12px;
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid var(--color-black);
 }
 
 th {
-  background: linear-gradient(135deg, #c2bab0, #c5bfb3);
-  color: #080808;
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  color: var(--scoreboard-th-color);
   font-size: 18px;
 }
 
 td {
-  font-size: 25PX;
+  font-size: 25px;
 }
 
 /* Common table row style */

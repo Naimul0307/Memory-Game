@@ -1,0 +1,253 @@
+@media (orientation: portrait) {
+  body {
+    background: url('../background/setting-portrait.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+}
+
+@media (orientation: landscape) {
+  body {
+    background: url('../background/setting-landscape.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+#settingsPage {
+  width: 90%;
+  max-width: 1000px;
+  max-height: 85vh;
+  overflow-y: auto;
+  margin: 0 auto;
+  padding: 20px 24px;
+  background: var(--settings-card-bg);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px var(--shadow-strong);
+}
+
+#settingsPage::-webkit-scrollbar {
+  width: 6px;
+}
+#settingsPage::-webkit-scrollbar-thumb {
+  background: var(--settings-input-border);
+  border-radius: 4px;
+}
+
+h1 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: var(--heading-color);
+}
+
+h2 {
+  font-size: 14px;
+  margin: 20px 0 8px;
+  color: var(--heading-color);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 16px 0;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--settings-row-border);
+}
+
+.setting-row label {
+  font-size: 13px;
+  color: var(--label-color);
+  word-break: break-all;
+}
+
+.setting-row input[type="text"],
+.setting-row select {
+  width: 180px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--settings-input-border);
+  background: var(--settings-input-bg);
+  color: var(--settings-input-text);
+  font-size: 12px;
+}
+
+/* Font upload input */
+#fontUploader {
+  margin-bottom: 10px;
+  color: var(--color-text-dark);
+  font-size: 12px;
+}
+
+/* Background upload input */
+#bgUploader {
+  margin-bottom: 10px;
+  color: var(--color-text-dark);
+  font-size: 12px;
+}
+
+/* Shared grid system: fonts + colors, fixed 5 per row, smaller cards */
+#fontGrid,
+#colorGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+/* Background slot grid: 3 per row (thumbnails need more room) */
+#bgGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (max-width: 700px) {
+  #fontGrid,
+  #colorGrid {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  }
+  #bgGrid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  }
+}
+
+.font-item,
+.color-item,
+.bg-item {
+  background: var(--settings-thumb-bg);
+  border-radius: 6px;
+  padding: 6px;
+  text-align: center;
+}
+
+.font-item .thumb {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  background: var(--settings-thumb-bg);
+  border-radius: 5px;
+  margin-bottom: 5px;
+  padding: 4px;
+  word-break: break-word;
+}
+
+/* Color card swatch — Pickr mounts its button inside this */
+.color-item .swatch {
+  height: 36px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  border: 1px solid var(--settings-input-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Make Pickr's own button fill the swatch box completely */
+.color-item .swatch .pcr-button {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 5px !important;
+}
+
+/* Background thumbnail */
+.bg-thumb {
+  height: 70px;
+  border-radius: 6px;
+  background: var(--settings-thumb-bg);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--settings-empty-color);
+  font-size: 10px;
+}
+
+.bg-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.font-item .file-name,
+.color-item .color-name,
+.bg-item .file-name {
+  font-size: 9px;
+  color: var(--settings-filename-color);
+  word-break: break-all;
+  margin-bottom: 2px;
+}
+
+.color-item .color-value {
+  font-size: 8px;
+  color: var(--settings-empty-color);
+  word-break: break-all;
+  margin-bottom: 4px;
+}
+
+.font-item .delete-btn,
+.bg-item .delete-btn {
+  width: 100%;
+  padding: 4px;
+  font-size: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: var(--settings-delete-bg);
+  color: var(--color-white);
+}
+
+.font-item .delete-btn:hover,
+.bg-item .delete-btn:hover {
+  background: var(--settings-delete-hover-bg);
+}
+
+.bg-item .delete-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.empty-note {
+  color: var(--settings-empty-color);
+  font-size: 12px;
+  grid-column: 1 / -1;
+}
+
+#saveBtn {
+  margin-top: 16px;
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  color: var(--color-text-dark);
+}
+
+#saveBtn:hover {
+  opacity: 0.9;
+}
+
+#status {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--settings-status-color);
+  min-height: 16px;
+  text-align: center;
+}

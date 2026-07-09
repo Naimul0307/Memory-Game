@@ -1,24 +1,22 @@
-  
 /* BACKGROUNDS */
 @media (orientation: portrait) {
   body {
-    background: url('../background/portrait.jpg') no-repeat center center fixed;
+    background: url('../background/game-portrait.jpg') no-repeat center center fixed;
     background-size: cover;
   }
 }
 
 @media (orientation: landscape) {
   body {
-    background: url('../background/landscape.jpg') no-repeat center center fixed;
+    background: url('../background/game-landscape.jpg') no-repeat center center fixed;
     background-size: cover;
   }
 }
 
 /*** HEADER ***/
+/* base flex-direction/overflow now live in global.css .container */
 .container {
-    flex-direction: column;
-    margin-top: 150px; 
-    overflow: hidden;
+    margin-top: 150px;
 }
 
 /*** CARD DECK ***/
@@ -38,7 +36,7 @@
     width: 200px;
     padding: 10px;
     font-size: 0;
-    color: #050505;
+    color: var(--color-text-primary);
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -64,8 +62,8 @@
     position: absolute;
     backface-visibility: hidden;
     border-radius: 12px;
-    background: linear-gradient(135deg, #d8d6d4, #c5bfb3);
-    border: 5px solid #000000;
+    background: linear-gradient(135deg, var(--game-card-gradient-start), var(--gradient-end));
+    border: 5px solid var(--color-black);
 }
 
 .card-front {
@@ -85,27 +83,13 @@
 }
 
 /*** GRID SYSTEM ***/
-/* .grid {
-    margin: 0 auto;
-    width: 90%;
-    margin-top: 20px;
-} */
-
-.row {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.col-5 {
-    margin: auto;
-}
+/* .row / .col-5 moved to global.css (identical in index.css and game.css) */
 
 /*** SCORE PANEL ***/
 .score-panel {
     text-align: center;
     width: 70%;
-    margin-left: 222px;
+    margin-left: 108px;
     padding: 5px;
     margin-top: 40px;
 }
@@ -116,7 +100,7 @@
     font-size: 30px; /* Slightly larger font */
     overflow: visible;
     font-weight: bolder;
-    color: #020202;
+    color: var(--game-stars-color);
 }
 
 .score-panel .stars li {
@@ -125,7 +109,7 @@
 }
 
 #bestScore {
-    color: #030303;
+    color: var(--game-score-color);
 }
 
 .moves {
@@ -137,13 +121,8 @@
     font-size: 30px;
     font-weight: bolder;
     padding-right: 10px;
-    color: #000000;
+    color: var(--game-subtitle-color);
 }
-
-/* .timer {
-    text-align: right;
-    padding-left: 10px;
-} */
 
 .timer {
   position: absolute;
@@ -155,8 +134,8 @@
   border-radius: 50%;
 
   /* CSS variables control the colors */
-  --timer-fill: #e0c7a9;
-  --timer-bg: #c5bfb3;
+  --timer-fill: var(--game-timer-fill);
+  --timer-bg: var(--game-timer-bg);
 
   background: conic-gradient(
     var(--timer-fill) 0deg,
@@ -168,8 +147,8 @@
   justify-content: center;
   font-size: 60px;
   font-weight: bold;
-  color: #0c0c0c;
-  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  color: var(--color-text-dark);
+  box-shadow: 0 0 15px var(--game-timer-shadow);
   backdrop-filter: blur(5px);
 }
 
